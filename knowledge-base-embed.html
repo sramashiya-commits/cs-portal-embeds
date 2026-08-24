@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Knowledge Base — CS Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,200..900;1,9..40,200..900&family=Playfair+Display:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root {
+  --bg: #F6F5F2;
+  --bg-white: #FFFFFF;
+  --fg: #1E1E2E;
+  --fg-secondary: #5A5A6E;
+  --muted: #9494A6;
+  --accent: #2B6B5E;
+  --accent-light: #3A8F7E;
+  --accent-soft: #E8F3F0;
+  --accent-glow: rgba(43,107,94,0.08);
+  --warm: #C4724E;
+  --warm-soft: #FDF0EA;
+  --card: #FFFFFF;
+  --card-hover: #FAFAF8;
+  --border: #E6E5E2;
+  --border-light: #F0EFEC;
+  --shadow-sm: 0 1px 3px rgba(30,30,46,0.04);
+  --shadow-md: 0 4px 16px rgba(30,30,46,0.06);
+  --shadow-lg: 0 8px 32px rgba(30,30,46,0.08);
+  --radius: 8px;
+  --radius-lg: 14px;
+  --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  padding: 24px;
+}
+
+/* Search Bar */
+.knowledge-search {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+.knowledge-search h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--fg);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.knowledge-search h2 i { color: var(--accent); font-size: 18px; }
+.search-row { position: relative; }
+.search-row input {
+  width: 100%;
+  padding: 11px 16px 11px 42px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 14px;
+  background: var(--bg);
+  outline: none;
+  transition: var(--transition);
+}
+.search-row input:focus { border-color: var(--accent); background: var(--bg-white); box-shadow: 0 0 0 3px var(--accent-glow); }
+.search-row .search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+}
+.filter-chips {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+.chip {
+  padding: 5px 14px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--fg-secondary);
+  background: var(--bg-white);
+  cursor: pointer;
+  transition: var(--transition);
+}
+.chip:hover, .chip.active { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+
+/* SOP Cards */
+.sop-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 18px;
+}
+.sop-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  transition: var(--transition);
+  cursor: pointer;
+  position: relative;
+}
+.sop-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+  border-color: var(--accent);
+}
+.sop-card-icon {
+  width: 42px; height: 42px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px;
+  margin-bottom: 14px;
+}
+.sop-card h4 {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  line-height: 1.35;
+}
+.sop-card p {
+  font-size: 12px;
+  color: var(--fg-secondary);
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+.sop-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--muted);
+}
+.sop-card-footer .version {
+  background: var(--bg);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+}
+.sop-card-footer .download {
+  color: var(--accent);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Modal */
+.modal-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 150;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+.modal-backdrop.show { display: flex; }
+.modal {
+  background: var(--bg-white);
+  border-radius: var(--radius-lg);
+  max-width: 640px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 32px;
+  box-shadow: 0 16px 48px rgba(30,30,46,0.10);
+}
+.modal h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+.modal p {
+  font-size: 13.5px;
+  color: var(--fg-secondary);
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+.modal-close {
+  float: right;
+  font-size: 18px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: var(--transition);
+  background: none;
+  border: none;
+}
+.modal-close:hover { color: var(--fg); }
+.btn-primary {
+  padding: 7px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--accent);
+  cursor: pointer;
+  transition: var(--transition);
+  display: inline-flex; align-items: center; gap: 5px;
+}
+.btn-primary:hover { background: var(--accent-light); }
+.btn-outline {
+  padding: 7px 16px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--fg-secondary);
+  background: var(--bg-white);
+  cursor: pointer;
+  transition: var(--transition);
+  display: inline-flex; align-items: center; gap: 5px;
+}
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--accent);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: var(--shadow-lg);
+  z-index: 300;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: var(--transition);
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sop-grid { grid-template-columns: repeat(2,1fr); }
+  body { padding: 12px; }
+}
+@media (max-width: 480px) {
+  .sop-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="knowledge-search">
+  <h2><i class="fas fa-book-open"></i> Knowledge Base — SOPs & Resources</h2>
+  <div class="search-row">
+    <i class="fas fa-search search-icon"></i>
+    <input type="text" placeholder="Search SOPs, policies, guides..." id="sopSearch">
+  </div>
+  <div class="filter-chips">
+    <button class="chip active" onclick="filterSOPs('all', this)">All</button>
+    <button class="chip" onclick="filterSOPs('call', this)"><i class="fas fa-phone-alt" style="margin-right:4px; font-size:10px;"></i> Call Handling</button>
+    <button class="chip" onclick="filterSOPs('email', this)"><i class="fas fa-envelope" style="margin-right:4px; font-size:10px;"></i> Email & Chat</button>
+    <button class="chip" onclick="filterSOPs('escalation', this)"><i class="fas fa-level-up-alt" style="margin-right:4px; font-size:10px;"></i> Escalation</button>
+    <button class="chip" onclick="filterSOPs('compliance', this)"><i class="fas fa-shield-alt" style="margin-right:4px; font-size:10px;"></i> Compliance</button>
+    <button class="chip" onclick="filterSOPs('crm', this)"><i class="fas fa-laptop-code" style="margin-right:4px; font-size:10px;"></i> CRM</button>
+    <button class="chip" onclick="filterSOPs('product', this)"><i class="fas fa-box-open" style="margin-right:4px; font-size:10px;"></i> Product</button>
+  </div>
+</div>
+
+<div class="sop-grid" id="sopGrid">
+  <div class="sop-card" data-category="call">
+    <div class="sop-card-icon" style="background:var(--accent-soft); color:var(--accent);"><i class="fas fa-phone-alt"></i></div>
+    <h4>Inbound Call Handling SOP</h4>
+    <p>Standard procedure for greeting, identifying, and resolving inbound customer calls including warm transfers.</p>
+    <div class="sop-card-footer">
+      <span class="version">v3.2</span>
+      <span>Updated Jul 2026</span>
+      <span class="download" onclick="event.stopPropagation(); showToast('Downloading SOP...');"><i class="fas fa-download"></i> PDF</span>
+    </div>
+  </div>
+  <div class="sop-card" data-category="call">
+    <div class="sop-card-icon" style="background:var(--accent-soft); color:var(--accent);"><i class="fas fa-phone-volume"></i></div>
+    <h4>Outbound Callback Procedure</h4>
+    <p>Guidelines for scheduled callbacks, follow-up calls, and proactive outreach scenarios.</p>
+    <div class="sop-card-footer">
+      <span class="version">v2.5</span>
+      <span>Updated Jun 2026</span>
+      <span class="download" onclick="event.stopPropagation(); showToast('Downloading SOP...');"><i class="fas fa-download"></i> PDF</span>
+    </div>
+  </div>
+  <div class="sop-card" data-category="email">
+    <div class="sop-card-icon" style="background:#EFF6FF; color:#2563EB;"><i class="fas fa-envelope"></i></div>
+    <h4>Email Triage & Escalation</h4>
+    <p>Classification, prioritization, and escalation process for incoming customer emails.</p>
+    <div class="sop-card-footer">
+      <span class="version">v2.1</span>
+      <span>Updated Aug 2026</span>
+      <span class="download" onclick="event.stopPropagation(); showToast('Downloading SOP...');"><i class="fas fa-download"></i> PDF</span>
+    </div>
+  </div>
+  <div class="sop-card" data-category="email">
+    <div class="sop-card-icon" style="background:#EFF6FF; color:#2563EB;"><i class="fas fa-comments"></i></div>
+    <h4>Live Chat Response Guidelines</h4>
+    <p>Handling multiple concurrent chats, tone guidelines, and response time SLAs.</p>
+    <div class="sop-card-footer">
+      <span class="version">v1.8</span>
+      <span>Updated Jul 2026</span>
+      <span class="download" onclick="event.stopPropagation(); showToast('Downloading SOP...');"><i class="fas fa-download"></i> PDF</span>
+    </div>
+  </div>
+  <div class="sop-card" data-category="escalation">
+    <div class="sop-card-icon" style="background:#FEF2F2; color:#DC2626;"><i class="fas fa-level-up-alt"></i></div>
+    <h4>Tier 2 & 3 Escalation Matrix</h4>
+    <p>When and how to escalate to Tier 2/3, including required documentation and SLAs.</p>
+    <div class="sop-card-footer">
+      <span class="version">v4.0</span>
+      <span>Updated Aug 2026</span>
+      <span class="download" onclick="event.stopPropagation(); showToast('Downloading SOP...');"><i class="fas fa-download"></i> PDF</span>
+    </div>
+  </div>
+  <div class="sop-card" data-category="escalation">
+    <div class="sop-card-icon" style="background:#FEF2F2; color:#DC2626;"><i class="fas fa-exclamation-circle"></i></div>
+    <h4>Complaint Resolution Process</h4>
+    <p>Step-by-step complaint handling from intake to resolution, including compensation guidelines.</p>
+    <div class="sop-card-footer">
+      <span class="version">v4.0</span>
+      <span>Updated Jun 2026</span>
+      <span class="download" onclick="event.stopPropagation(); showToast('Downloading SOP...');"><i class="fas fa-download"></i> PDF</span>
+    </div>
+  </div>
+  <div class="sop-card" data-category="compliance">
+    <div class="sop-card-icon" style="background:#FFF7ED; color:#C2410C;"><i class="fas fa-shield-alt"></i></div>
+    <h4>Data Privacy & GDPR Compliance</h4>
+    <p>Handling customer data, consent requirements, and breach notification procedures.</p>
+    <div class="sop-card-footer">
+      <span class="version">v5.1</span>
+      <span>Updated Aug 2026</span>
+      <span class="download" onclick="event.stopPropagation(); showToast('Downloading SOP...');"><i class="fas fa-download"></i> PDF</span>
+    </div>
+  </div>
+  <div class="sop-card" data-category="compliance">
+    <div class="sop-card-icon" style="background:#FFF7ED; color:#C2410C;"><i class="fas fa-file-contract"></i></div>
+    <h4>Incident Reporting Procedure</h4>
+    <p>How to report privacy and security incidents within the 1-hour reporting window.</p>
+    <div class="sop-card-footer">
+      <span class="version">v3.0</span>
+      <span>Updated Aug 2026</span>
+      <span class="download" onclick="event.stopPropagation(); showToast('Downloading SOP...');"><i class="fas fa-download"></i> PDF</span>
+    </div>
+  </div>
+  <div class="sop-card" data-category="crm">
+    <div class="sop-card-icon" style="background:#F5F3FF; color:#7C3AED;"><i class="fas fa-laptop-code"></i></div>
+    <h4>CRM Quick Start Guide</h4>
+    <p>Login, navigation, dashboard overview, and basic ticket creation in the new CRM.</p>
+    <div class="sop-card-footer">
+      <span class="version">v1.0</span>
+      <span>Updated Aug 2026</span>
+      <span class="download" onclick="event.stopPropagation(); showToast('Downloading SOP...');"><i class="fas fa-download"></i> PDF</span>
+    </div>
+  </div>
+  <div class="sop-card" data-category="crm">
+    <div class="sop-card-icon" style="background:#F5F3FF; color:#7C3AED;"><i class="fas fa-database"></i></div>
+    <h4>CRM Ticket Categorization & Tags</h4>
+    <p>Standardized categories, tags, and labels for organizing customer tickets.</p>
+    <div class="sop-card-footer">
+      <span class="version">v1.0</span>
+      <span>Updated Aug 2026</span>
+      <span class="download" onclick="event.stopPropagation(); showToast('Downloading SOP...');"><i class="fas fa-download"></i> PDF</span>
+    </div>
+  </div>
+  <div class="sop-card" data-category="product">
+    <div class="sop-card-icon" style="background:#FEF9C3; color:#CA8A04;"><i class="fas fa-box-open"></i></div>
+    <h4>Product Catalog & Feature Guide</h4>
+    <p>Complete product catalog with feature descriptions, pricing tiers, and common troubleshooting.</p>
+    <div class="sop-card-footer">
+      <span class="version">v6.2</span>
+      <span>Updated Jul 2026</span>
+      <span class="download" onclick="event.stopPropagation(); showToast('Downloading SOP...');"><i class="fas fa-download"></i> PDF</span>
+    </div>
+  </div>
+  <div class="sop-card" data-category="product">
+    <div class="sop-card-icon" style="background:#FEF9C3; color:#CA8A04;"><i class="fas fa-wrench"></i></div>
+    <h4>Known Issues & Workarounds</h4>
+    <p>Currently tracked product issues, their status, and customer-facing workarounds.</p>
+    <div class="sop-card-footer">
+      <span class="version">v2.3</span>
+      <span>Updated Aug 2026</span>
+      <span class="download" onclick="event.stopPropagation(); showToast('Downloading SOP...');"><i class="fas fa-download"></i> PDF</span>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+function filterSOPs(category, btn) {
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  const cards = document.querySelectorAll('#sopGrid .sop-card');
+  cards.forEach(card => {
+    card.style.display = (category === 'all' || card.dataset.category === category) ? 'block' : 'none';
+  });
+}
+
+document.getElementById('sopSearch').addEventListener('input', function() {
+  const q = this.value.toLowerCase();
+  document.querySelectorAll('#sopGrid .sop-card').forEach(card => {
+    card.style.display = card.textContent.toLowerCase().includes(q) ? 'block' : 'none';
+  });
+  if (q.length > 0) {
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  } else {
+    document.querySelector('.chip').classList.add('active');
+  }
+});
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function openModal(content) {
+  document.getElementById('modalContent').innerHTML = content;
+  document.getElementById('modalBackdrop').classList.add('show');
+}
+function closeModal() {
+  document.getElementById('modalBackdrop').classList.remove('show');
+}
+document.getElementById('modalBackdrop').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+document.querySelectorAll('.sop-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const title = card.querySelector('h4').textContent;
+    const desc = card.querySelector('p').textContent;
+    const version = card.querySelector('.version').textContent;
+    openModal(`
+      <h3>${title}</h3>
+      <p><strong>Version:</strong> ${version}</p>
+      <p>${desc}</p>
+      <p style="margin-top:12px;">This SOP is maintained by the Knowledge Team. For questions or suggested updates, please submit a change request through the Knowledge Base portal.</p>
+      <div style="display:flex; gap:8px; margin-top:20px;">
+        <button class="btn-primary" onclick="showToast('Downloading PDF...'); closeModal();"><i class="fas fa-download"></i> Download PDF</button>
+        <button class="btn-outline" onclick="showToast('Opening in viewer...'); closeModal();"><i class="fas fa-eye"></i> View Online</button>
+      </div>
+    `);
+  });
+});
+</script>
+</body>
+</html>

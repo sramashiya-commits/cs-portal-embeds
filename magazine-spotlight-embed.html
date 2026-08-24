@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magazine & Spotlight — CS Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,200..900;1,9..40,200..900&family=Playfair+Display:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root {
+  --bg: #F6F5F2;
+  --bg-white: #FFFFFF;
+  --fg: #1E1E2E;
+  --fg-secondary: #5A5A6E;
+  --muted: #9494A6;
+  --accent: #2B6B5E;
+  --accent-light: #3A8F7E;
+  --accent-soft: #E8F3F0;
+  --accent-glow: rgba(43,107,94,0.08);
+  --warm: #C4724E;
+  --warm-soft: #FDF0EA;
+  --card: #FFFFFF;
+  --border: #E6E5E2;
+  --border-light: #F0EFEC;
+  --shadow-sm: 0 1px 3px rgba(30,30,46,0.04);
+  --shadow-md: 0 4px 16px rgba(30,30,46,0.06);
+  --shadow-lg: 0 8px 32px rgba(30,30,46,0.08);
+  --radius: 8px;
+  --radius-lg: 14px;
+  --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  padding: 24px;
+}
+
+/* Magazine Hero */
+.magazine-hero {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.magazine-hero::before {
+  content: '';
+  position: absolute;
+  top: -50px; right: -50px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, var(--accent-soft) 0%, transparent 70%);
+  pointer-events: none;
+}
+.magazine-hero h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: flex; align-items: center; gap: 10px;
+}
+.magazine-hero h2 i { color: var(--accent); }
+.magazine-hero p {
+  font-size: 14px;
+  color: var(--fg-secondary);
+  max-width: 500px;
+}
+
+/* Section Header */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--fg);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-title i { color: var(--accent); font-size: 16px; }
+.btn-primary {
+  padding: 7px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--accent);
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex; align-items: center; gap: 5px;
+}
+.btn-primary:hover { background: var(--accent-light); }
+
+/* Gallery */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  grid-auto-rows: 180px;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.gallery-item {
+  border-radius: var(--radius);
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.gallery-item:hover {
+  transform: scale(1.02);
+  box-shadow: var(--shadow-lg);
+}
+.gallery-item.span-2 {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+.img-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: rgba(255,255,255,0.35);
+}
+.gallery-overlay {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 12px 16px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.7));
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  opacity: 0.85;
+  transition: var(--transition);
+}
+.gallery-item:hover .gallery-overlay { opacity: 1; }
+
+/* Spotlight */
+.spotlight-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  transition: var(--transition);
+  margin-bottom: 14px;
+  cursor: pointer;
+}
+.spotlight-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+.spotlight-avatar {
+  width: 70px; height: 70px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-soft), var(--warm-soft));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--accent);
+  flex-shrink: 0;
+  border: 3px solid var(--accent-soft);
+}
+.spotlight-info { flex: 1; }
+.spotlight-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 10.5px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.spotlight-badge.star { background: #FEF9C3; color: #CA8A04; }
+.spotlight-badge.heart { background: #FCE7F3; color: #DB2777; }
+.spotlight-badge.trophy { background: #F0FDF4; color: #16A34A; }
+.spotlight-info h4 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.spotlight-info p {
+  font-size: 12.5px;
+  color: var(--fg-secondary);
+  line-height: 1.55;
+}
+.spotlight-quote {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--accent);
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+/* Modal */
+.modal-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 150;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+.modal-backdrop.show { display: flex; }
+.modal {
+  background: var(--bg-white);
+  border-radius: var(--radius-lg);
+  max-width: 640px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 32px;
+  box-shadow: 0 16px 48px rgba(30,30,46,0.10);
+}
+.modal h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+.modal p {
+  font-size: 13.5px;
+  color: var(--fg-secondary);
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+.modal-close {
+  float: right;
+  font-size: 18px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: var(--transition);
+  background: none;
+  border: none;
+}
+.modal-close:hover { color: var(--fg); }
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--accent);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: var(--shadow-lg);
+  z-index: 300;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: var(--transition);
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .gallery-grid { grid-template-columns: repeat(2,1fr); grid-auto-rows: 140px; }
+  .gallery-item.span-2 { grid-column: span 2; grid-row: span 1; }
+  body { padding: 12px; }
+}
+@media (max-width: 480px) {
+  .gallery-grid { grid-template-columns: 1fr; }
+  .spotlight-card { flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="magazine-hero">
+  <h2><i class="fas fa-camera"></i> Magazine & Spotlight Moments</h2>
+  <p>Celebrating our team's achievements, milestones, and the people who make our customer service extraordinary.</p>
+</div>
+
+<!-- Photo Gallery -->
+<div class="section-header">
+  <h2 class="section-title"><i class="fas fa-images"></i> Team Gallery</h2>
+  <button class="btn-primary"><i class="fas fa-upload"></i> Submit Photo</button>
+</div>
+<div class="gallery-grid">
+  <div class="gallery-item span-2" style="background: linear-gradient(135deg, #2B6B5E, #3A8F7E);">
+    <div class="img-placeholder" style="font-size:48px;"><i class="fas fa-users"></i></div>
+    <div class="gallery-overlay">Team Building Day — August 2026</div>
+  </div>
+  <div class="gallery-item" style="background: linear-gradient(135deg, #C4724E, #D4956F);">
+    <div class="img-placeholder" style="font-size:28px;"><i class="fas fa-award"></i></div>
+    <div class="gallery-overlay">Q2 Awards Ceremony</div>
+  </div>
+  <div class="gallery-item" style="background: linear-gradient(135deg, #6366F1, #818CF8);">
+    <div class="img-placeholder" style="font-size:28px;"><i class="fas fa-graduation-cap"></i></div>
+    <div class="gallery-overlay">Training Graduation</div>
+  </div>
+  <div class="gallery-item" style="background: linear-gradient(135deg, #0891B2, #22D3EE);">
+    <div class="img-placeholder" style="font-size:28px;"><i class="fas fa-cake-candles"></i></div>
+    <div class="gallery-overlay">Birthday Celebration</div>
+  </div>
+  <div class="gallery-item" style="background: linear-gradient(135deg, #D97706, #FBBF24);">
+    <div class="img-placeholder" style="font-size:28px;"><i class="fas fa-trophy"></i></div>
+    <div class="gallery-overlay">CS Week Champions</div>
+  </div>
+  <div class="gallery-item" style="background: linear-gradient(135deg, #DB2777, #F472B6);">
+    <div class="img-placeholder" style="font-size:28px;"><i class="fas fa-heart"></i></div>
+    <div class="gallery-overlay">Valentine's Day Team</div>
+  </div>
+  <div class="gallery-item" style="background: linear-gradient(135deg, #16A34A, #4ADE80);">
+    <div class="img-placeholder" style="font-size:28px;"><i class="fas fa-tree"></i></div>
+    <div class="gallery-overlay">Holiday Party 2025</div>
+  </div>
+</div>
+
+<!-- Spotlights -->
+<div class="section-header">
+  <h2 class="section-title"><i class="fas fa-star"></i> Spotlight Moments</h2>
+  <button class="btn-primary"><i class="fas fa-user-plus"></i> Nominate Someone</button>
+</div>
+<div class="spotlight-card">
+  <div class="spotlight-avatar">MR</div>
+  <div class="spotlight-info">
+    <div class="spotlight-badge star"><i class="fas fa-star"></i> Star Performer — August</div>
+    <h4>Maria Rodriguez</h4>
+    <p>Maria achieved a <strong>99.2% CSAT score</strong> this month and resolved 15% more tickets than the team average. Her dedication to going above-and-beyond for every customer has earned her this month's Star Performer recognition.</p>
+    <div class="spotlight-quote">"Every customer interaction is an opportunity to make someone's day better."</div>
+  </div>
+</div>
+<div class="spotlight-card">
+  <div class="spotlight-avatar">JK</div>
+  <div class="spotlight-info">
+    <div class="spotlight-badge heart"><i class="fas fa-heart"></i> Heart of the Team</div>
+    <h4>James Kim</h4>
+    <p>James has been the go-to mentor for new hires this quarter, voluntarily spending over <strong>40 hours</strong> helping onboard 5 new team members. His patience and knowledge-sharing embody our team values.</p>
+    <div class="spotlight-quote">"We rise by lifting others — that's what makes this team special."</div>
+  </div>
+</div>
+<div class="spotlight-card">
+  <div class="spotlight-avatar">LP</div>
+  <div class="spotlight-info">
+    <div class="spotlight-badge trophy"><i class="fas fa-trophy"></i> Innovation Award</div>
+    <h4>Lisa Park</h4>
+    <p>Lisa identified a bottleneck in our email triage process and proposed an automated categorization system that <strong>reduced response time by 22%</strong>. Her initiative has transformed how we handle inbound emails.</p>
+    <div class="spotlight-quote">"Don't just do things better — find a better way to do things."</div>
+  </div>
+</div>
+<div class="spotlight-card">
+  <div class="spotlight-avatar">DT</div>
+  <div class="spotlight-info">
+    <div class="spotlight-badge star"><i class="fas fa-star"></i> Rising Star</div>
+    <h4>David Torres</h4>
+    <p>In just 3 months, David has mastered <strong>all Tier 1 and 2 procedures</strong>, becoming the fastest agent in our team's history to achieve full proficiency. His eagerness to learn is truly inspiring.</p>
+    <div class="spotlight-quote">"The best way to learn is to jump in and never stop asking questions."</div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+function openModal(content) {
+  document.getElementById('modalContent').innerHTML = content;
+  document.getElementById('modalBackdrop').classList.add('show');
+}
+function closeModal() {
+  document.getElementById('modalBackdrop').classList.remove('show');
+}
+document.getElementById('modalBackdrop').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+document.querySelectorAll('.gallery-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const caption = item.querySelector('.gallery-overlay').textContent;
+    showToast('Opening: ' + caption);
+  });
+});
+
+document.querySelectorAll('.spotlight-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const name = card.querySelector('h4').textContent;
+    const badge = card.querySelector('.spotlight-badge').textContent.trim();
+    const desc = card.querySelector('p').innerHTML;
+    const quote = card.querySelector('.spotlight-quote').textContent;
+    openModal(`
+      <h3>${badge}</h3>
+      <p style="font-size:18px; font-weight:600; margin-bottom:12px;">${name}</p>
+      <p>${desc}</p>
+      <div style="font-family:'Playfair Display',serif; font-style:italic; font-size:16px; color:#2B6B5E; margin-top:16px; padding:16px; background:#E8F3F0; border-radius:8px;">${quote}</div>
+      <p style="margin-top:16px; font-size:12px; color:#9494A6;">Nominated by the CS Team · August 2026</p>
+    `);
+  });
+});
+</script>
+</body>
+</html>
