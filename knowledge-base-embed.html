@@ -9,402 +9,471 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
 :root {
-  --bg: #F6F5F2;
+  --bg: #F5F0EB;
+  --bg-mesh: linear-gradient(135deg, #F5F0EB 0%, #E8F3F0 50%, #FDF0EA 100%);
   --bg-white: #FFFFFF;
-  --fg: #1E1E2E;
+  --fg: #2C2C3A;
   --fg-secondary: #5A5A6E;
   --muted: #9494A6;
   --accent: #2B6B5E;
   --accent-light: #3A8F7E;
   --accent-soft: #E8F3F0;
-  --accent-glow: rgba(43,107,94,0.08);
+  --accent-glow: rgba(43,107,94,0.15);
+  --accent-gradient: linear-gradient(135deg, #2B6B5E 0%, #3A8F7E 100%);
   --warm: #C4724E;
   --warm-soft: #FDF0EA;
-  --card: #FFFFFF;
-  --card-hover: #FAFAF8;
-  --border: #E6E5E2;
-  --border-light: #F0EFEC;
+  --warm-gradient: linear-gradient(135deg, #C4724E 0%, #D4956F 100%);
+  --card: rgba(255,255,255,0.72);
+  --card-solid: #FFFFFF;
+  --card-hover: rgba(255,255,255,0.88);
+  --border: rgba(230,229,226,0.6);
+  --border-glow: rgba(43,107,94,0.25);
+  --glass-blur: blur(16px);
   --shadow-sm: 0 1px 3px rgba(30,30,46,0.04);
-  --shadow-md: 0 4px 16px rgba(30,30,46,0.06);
-  --shadow-lg: 0 8px 32px rgba(30,30,46,0.08);
-  --radius: 8px;
-  --radius-lg: 14px;
-  --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
+  --shadow-md: 0 8px 24px rgba(43,107,94,0.08), 0 2px 8px rgba(30,30,46,0.04);
+  --shadow-lg: 0 16px 48px rgba(43,107,94,0.10), 0 4px 12px rgba(30,30,46,0.05);
+  --shadow-glow: 0 0 24px rgba(43,107,94,0.12);
+  --radius: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+  --transition-slow: 0.5s cubic-bezier(0.4,0,0.2,1);
+  --transition-bounce: 0.4s cubic-bezier(0.34,1.56,0.64,1);
+
+  /* Category Colors */
+  --cat-cs: #2B6B5E;
+  --cat-cs-soft: #E8F3F0;
+  --cat-invest: #7C3AED;
+  --cat-invest-soft: #F5F3FF;
+  --cat-funeral: #C4724E;
+  --cat-funeral-soft: #FDF0EA;
+  --cat-digital: #0891B2;
+  --cat-digital-soft: #ECFEFF;
 }
 
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
   font-family: 'DM Sans', sans-serif;
-  background: var(--bg);
+  background: var(--bg-mesh);
   color: var(--fg);
-  line-height: 1.6;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
-  padding: 24px;
+  -moz-osx-font-smoothing: grayscale;
+  padding: 28px;
+  overflow-x: hidden;
 }
 
-/* Search Bar */
-.knowledge-search {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 24px;
-  margin-bottom: 24px;
+/* ── Animations ── */
+@keyframes fadeSlideUp {
+  from { opacity:0; transform:translateY(24px); }
+  to { opacity:1; transform:translateY(0); }
 }
-.knowledge-search h2 {
+.fade-in { animation: fadeSlideUp 0.6s ease-out both; }
+.fade-in-d1 { animation-delay: 0.1s; }
+.fade-in-d2 { animation-delay: 0.2s; }
+.fade-in-d3 { animation-delay: 0.3s; }
+.fade-in-d4 { animation-delay: 0.4s; }
+
+/* ── Search Bar (Glass) ── */
+.kb-search {
+  background: var(--card);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 28px;
+  margin-bottom: 28px;
+  box-shadow: var(--shadow-md);
+  transition: var(--transition);
+}
+.kb-search:hover {
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
+  border-color: var(--border-glow);
+}
+.kb-search h2 {
   font-family: 'Playfair Display', serif;
-  font-size: 22px;
+  font-size: 26px;
   font-weight: 700;
   color: var(--fg);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 18px;
+  letter-spacing: -0.3px;
 }
-.knowledge-search h2 i { color: var(--accent); font-size: 18px; }
+.kb-search h2 i {
+  color: var(--accent);
+  font-size: 20px;
+  background: var(--accent-soft);
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+}
 .search-row { position: relative; }
 .search-row input {
   width: 100%;
-  padding: 11px 16px 11px 42px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  font-size: 14px;
-  background: var(--bg);
+  padding: 14px 18px 14px 48px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  font-size: 15px;
+  font-family: 'DM Sans', sans-serif;
+  background: rgba(245,240,235,0.6);
   outline: none;
   transition: var(--transition);
+  color: var(--fg);
 }
-.search-row input:focus { border-color: var(--accent); background: var(--bg-white); box-shadow: 0 0 0 3px var(--accent-glow); }
+.search-row input::placeholder { color: var(--muted); }
+.search-row input:focus {
+  border-color: var(--accent);
+  background: var(--bg-white);
+  box-shadow: 0 0 0 4px var(--accent-glow), var(--shadow-sm);
+}
 .search-row .search-icon {
-  position: absolute;
-  left: 14px;
-  top: 50%;
+  position: absolute; left: 16px; top: 50%;
   transform: translateY(-50%);
-  color: var(--muted);
+  color: var(--muted); font-size: 15px;
+  transition: var(--transition);
 }
+.search-row input:focus ~ .search-icon { color: var(--accent); }
+
 .filter-chips {
-  display: flex;
-  gap: 8px;
-  margin-top: 14px;
-  flex-wrap: wrap;
+  display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap;
 }
 .chip {
-  padding: 5px 14px;
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 500;
+  padding: 7px 18px;
+  border: 1.5px solid var(--border);
+  border-radius: 24px;
+  font-size: 13px; font-weight: 500;
   color: var(--fg-secondary);
-  background: var(--bg-white);
-  cursor: pointer;
-  transition: var(--transition);
-}
-.chip:hover, .chip.active { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
-
-/* SOP Cards */
-.sop-grid {
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
-  gap: 18px;
-}
-.sop-card {
   background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px;
-  transition: var(--transition);
+  backdrop-filter: blur(8px);
   cursor: pointer;
-  position: relative;
+  transition: var(--transition-bounce);
+  font-family: 'DM Sans', sans-serif;
+  display: flex; align-items: center; gap: 6px;
 }
-.sop-card:hover {
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
+.chip:hover {
   border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(43,107,94,0.1);
 }
-.sop-card-icon {
-  width: 42px; height: 42px;
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 17px;
-  margin-bottom: 14px;
+.chip.active {
+  border-color: var(--accent);
+  color: #fff;
+  background: var(--accent-gradient);
+  box-shadow: 0 4px 16px rgba(43,107,94,0.2);
+  transform: translateY(-1px);
 }
-.sop-card h4 {
-  font-size: 14px;
-  font-weight: 600;
-  margin-bottom: 6px;
-  line-height: 1.35;
+.chip .chip-dot {
+  width: 8px; height: 8px; border-radius: 50%;
 }
-.sop-card p {
-  font-size: 12px;
-  color: var(--fg-secondary);
-  line-height: 1.5;
-  margin-bottom: 12px;
+
+/* ── Category Section ── */
+.category-section {
+  margin-bottom: 32px;
+  scroll-margin-top: 20px;
 }
-.sop-card-footer {
+.category-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  font-size: 11px;
-  color: var(--muted);
+  gap: 14px;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--border);
 }
-.sop-card-footer .version {
-  background: var(--bg);
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 10px;
-  font-weight: 600;
+.category-icon {
+  width: 44px; height: 44px;
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  transition: var(--transition-bounce);
+  box-shadow: var(--shadow-sm);
 }
-.sop-card-footer .download {
-  color: var(--accent);
-  font-weight: 600;
-  cursor: pointer;
+.category-header:hover .category-icon {
+  transform: scale(1.08) rotate(-3deg);
 }
-
-/* Modal */
-.modal-backdrop {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-  z-index: 150;
-  align-items: center;
-  justify-content: center;
-  padding: 40px;
-}
-.modal-backdrop.show { display: flex; }
-.modal {
-  background: var(--bg-white);
-  border-radius: var(--radius-lg);
-  max-width: 640px;
-  width: 100%;
-  max-height: 80vh;
-  overflow-y: auto;
-  padding: 32px;
-  box-shadow: 0 16px 48px rgba(30,30,46,0.10);
-}
-.modal h3 {
+.category-header h3 {
   font-family: 'Playfair Display', serif;
   font-size: 20px;
   font-weight: 700;
-  margin-bottom: 16px;
+  letter-spacing: -0.3px;
 }
-.modal p {
-  font-size: 13.5px;
-  color: var(--fg-secondary);
-  line-height: 1.7;
+.category-header .doc-count {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  background: var(--bg);
+  padding: 3px 12px;
+  border-radius: 20px;
+  margin-left: auto;
+}
+
+/* ── SOP Document Cards ── */
+.doc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+.doc-card {
+  background: var(--card);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  transition: var(--transition-bounce);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.doc-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 3px;
+  opacity: 0;
+  transition: var(--transition);
+}
+.doc-card:hover::before { opacity: 1; }
+.doc-card:hover {
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
+  border-color: var(--border-glow);
+  transform: translateY(-5px);
+}
+
+.doc-card-top {
+  display: flex; align-items: flex-start; gap: 14px;
   margin-bottom: 14px;
 }
-.modal-close {
-  float: right;
+.doc-type-icon {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
   font-size: 18px;
-  color: var(--muted);
-  cursor: pointer;
-  transition: var(--transition);
-  background: none;
-  border: none;
+  flex-shrink: 0;
+  transition: var(--transition-bounce);
 }
-.modal-close:hover { color: var(--fg); }
-.btn-primary {
-  padding: 7px 16px;
-  border: none;
-  border-radius: 6px;
-  font-size: 12.5px;
+.doc-card:hover .doc-type-icon {
+  transform: scale(1.1) rotate(-3deg);
+}
+.doc-card-top .doc-info { flex: 1; }
+.doc-card-top h4 {
+  font-size: 14.5px;
   font-weight: 600;
-  color: #fff;
-  background: var(--accent);
-  cursor: pointer;
-  transition: var(--transition);
-  display: inline-flex; align-items: center; gap: 5px;
+  line-height: 1.4;
+  letter-spacing: -0.2px;
+  margin-bottom: 4px;
 }
-.btn-primary:hover { background: var(--accent-light); }
-.btn-outline {
-  padding: 7px 16px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  font-size: 12.5px;
+.doc-card-top .doc-filename {
+  font-size: 12px;
+  color: var(--muted);
   font-weight: 500;
-  color: var(--fg-secondary);
-  background: var(--bg-white);
-  cursor: pointer;
-  transition: var(--transition);
-  display: inline-flex; align-items: center; gap: 5px;
+  display: flex; align-items: center; gap: 4px;
 }
-.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+.doc-card-top .doc-filename i {
+  font-size: 10px;
+}
 
-/* Toast */
-.toast {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  background: var(--accent);
-  color: #fff;
-  padding: 12px 20px;
-  border-radius: 8px;
+.doc-card-desc {
   font-size: 13px;
-  font-weight: 500;
-  box-shadow: var(--shadow-lg);
-  z-index: 300;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: var(--transition);
+  color: var(--fg-secondary);
+  line-height: 1.6;
+  margin-bottom: 16px;
+  flex: 1;
 }
-.toast.show { opacity: 1; transform: translateY(0); }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .sop-grid { grid-template-columns: repeat(2,1fr); }
-  body { padding: 12px; }
+.doc-card-actions {
+  display: flex;
+  gap: 8px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(230,229,226,0.4);
 }
-@media (max-width: 480px) {
-  .sop-grid { grid-template-columns: 1fr; }
+.btn-doc {
+  flex: 1;
+  padding: 9px 14px;
+  border: none;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: var(--transition-bounce);
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  text-decoration: none;
+}
+.btn-doc:hover {
+  transform: translateY(-2px);
+}
+.btn-view {
+  color: #fff;
+  background: var(--accent-gradient);
+  box-shadow: 0 4px 14px rgba(43,107,94,0.18);
+}
+.btn-view:hover {
+  box-shadow: 0 6px 22px rgba(43,107,94,0.28);
+}
+.btn-folder {
+  color: var(--fg-secondary);
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+}
+.btn-folder:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* Category-specific top bars */
+.doc-card.cat-cs::before { background: linear-gradient(135deg, var(--cat-cs), var(--accent-light)); }
+.doc-card.cat-invest::before { background: linear-gradient(135deg, var(--cat-invest), #A78BFA); }
+.doc-card.cat-funeral::before { background: linear-gradient(135deg, var(--cat-funeral), #D4956F); }
+.doc-card.cat-digital::before { background: linear-gradient(135deg, var(--cat-digital), #22D3EE); }
+
+/* ── Toast ── */
+.toast {
+  position: fixed; bottom: 28px; right: 28px;
+  background: var(--accent-gradient); color: #fff;
+  padding: 14px 24px; border-radius: 12px;
+  font-size: 13.5px; font-weight: 500;
+  box-shadow: 0 8px 32px rgba(43,107,94,0.25);
+  z-index: 300; opacity: 0;
+  transform: translateY(12px) scale(0.95);
+  transition: var(--transition-bounce);
+}
+.toast.show { opacity: 1; transform: translateY(0) scale(1); }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(43,107,94,0.2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(43,107,94,0.35); }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  body { padding: 16px; }
+  .kb-search { padding: 20px; }
+  .kb-search h2 { font-size: 22px; }
+  .doc-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
 
-<div class="knowledge-search">
+<!-- ════════ Search & Filter ════════ -->
+<div class="kb-search fade-in">
   <h2><i class="fas fa-book-open"></i> Knowledge Base — SOPs & Resources</h2>
   <div class="search-row">
     <i class="fas fa-search search-icon"></i>
-    <input type="text" placeholder="Search SOPs, policies, guides..." id="sopSearch">
+    <input type="text" placeholder="Search SOPs by name, category, or keyword..." id="sopSearch">
   </div>
   <div class="filter-chips">
-    <button class="chip active" onclick="filterSOPs('all', this)">All</button>
-    <button class="chip" onclick="filterSOPs('call', this)"><i class="fas fa-phone-alt" style="margin-right:4px; font-size:10px;"></i> Call Handling</button>
-    <button class="chip" onclick="filterSOPs('email', this)"><i class="fas fa-envelope" style="margin-right:4px; font-size:10px;"></i> Email & Chat</button>
-    <button class="chip" onclick="filterSOPs('escalation', this)"><i class="fas fa-level-up-alt" style="margin-right:4px; font-size:10px;"></i> Escalation</button>
-    <button class="chip" onclick="filterSOPs('compliance', this)"><i class="fas fa-shield-alt" style="margin-right:4px; font-size:10px;"></i> Compliance</button>
-    <button class="chip" onclick="filterSOPs('crm', this)"><i class="fas fa-laptop-code" style="margin-right:4px; font-size:10px;"></i> CRM</button>
-    <button class="chip" onclick="filterSOPs('product', this)"><i class="fas fa-box-open" style="margin-right:4px; font-size:10px;"></i> Product</button>
+    <button class="chip active" onclick="filterCategory('all', this)">All</button>
+    <button class="chip" onclick="filterCategory('cs', this)"><span class="chip-dot" style="background:var(--cat-cs);"></span> Customer Services</button>
+    <button class="chip" onclick="filterCategory('invest', this)"><span class="chip-dot" style="background:var(--cat-invest);"></span> Investments</button>
+    <button class="chip" onclick="filterCategory('funeral', this)"><span class="chip-dot" style="background:var(--cat-funeral);"></span> Funeral</button>
+    <button class="chip" onclick="filterCategory('digital', this)"><span class="chip-dot" style="background:var(--cat-digital);"></span> Digital Support</button>
   </div>
 </div>
 
-<div class="sop-grid" id="sopGrid">
-  <div class="sop-card" data-category="call">
-    <div class="sop-card-icon" style="background:var(--accent-soft); color:var(--accent);"><i class="fas fa-phone-alt"></i></div>
-    <h4>Inbound Call Handling SOP</h4>
-    <p>Standard procedure for greeting, identifying, and resolving inbound customer calls including warm transfers.</p>
-    <div class="sop-card-footer">
-      <span class="version">v3.2</span>
-      <span>Updated Jul 2026</span>
-      <span class="download" onclick="event.stopPropagation(); showToast('Downloading SOP...');"><i class="fas fa-download"></i> PDF</span>
-    </div>
+<!-- ════════ Category 1: Customer Services SOP ════════ -->
+<div class="category-section fade-in fade-in-d1" id="cat-cs">
+  <div class="category-header">
+    <div class="category-icon" style="background:var(--cat-cs-soft); color:var(--cat-cs);"><i class="fas fa-headset"></i></div>
+    <h3>Customer Services SOP</h3>
+    <span class="doc-count">1 document</span>
   </div>
-  <div class="sop-card" data-category="call">
-    <div class="sop-card-icon" style="background:var(--accent-soft); color:var(--accent);"><i class="fas fa-phone-volume"></i></div>
-    <h4>Outbound Callback Procedure</h4>
-    <p>Guidelines for scheduled callbacks, follow-up calls, and proactive outreach scenarios.</p>
-    <div class="sop-card-footer">
-      <span class="version">v2.5</span>
-      <span>Updated Jun 2026</span>
-      <span class="download" onclick="event.stopPropagation(); showToast('Downloading SOP...');"><i class="fas fa-download"></i> PDF</span>
-    </div>
-  </div>
-  <div class="sop-card" data-category="email">
-    <div class="sop-card-icon" style="background:#EFF6FF; color:#2563EB;"><i class="fas fa-envelope"></i></div>
-    <h4>Email Triage & Escalation</h4>
-    <p>Classification, prioritization, and escalation process for incoming customer emails.</p>
-    <div class="sop-card-footer">
-      <span class="version">v2.1</span>
-      <span>Updated Aug 2026</span>
-      <span class="download" onclick="event.stopPropagation(); showToast('Downloading SOP...');"><i class="fas fa-download"></i> PDF</span>
-    </div>
-  </div>
-  <div class="sop-card" data-category="email">
-    <div class="sop-card-icon" style="background:#EFF6FF; color:#2563EB;"><i class="fas fa-comments"></i></div>
-    <h4>Live Chat Response Guidelines</h4>
-    <p>Handling multiple concurrent chats, tone guidelines, and response time SLAs.</p>
-    <div class="sop-card-footer">
-      <span class="version">v1.8</span>
-      <span>Updated Jul 2026</span>
-      <span class="download" onclick="event.stopPropagation(); showToast('Downloading SOP...');"><i class="fas fa-download"></i> PDF</span>
-    </div>
-  </div>
-  <div class="sop-card" data-category="escalation">
-    <div class="sop-card-icon" style="background:#FEF2F2; color:#DC2626;"><i class="fas fa-level-up-alt"></i></div>
-    <h4>Tier 2 & 3 Escalation Matrix</h4>
-    <p>When and how to escalate to Tier 2/3, including required documentation and SLAs.</p>
-    <div class="sop-card-footer">
-      <span class="version">v4.0</span>
-      <span>Updated Aug 2026</span>
-      <span class="download" onclick="event.stopPropagation(); showToast('Downloading SOP...');"><i class="fas fa-download"></i> PDF</span>
-    </div>
-  </div>
-  <div class="sop-card" data-category="escalation">
-    <div class="sop-card-icon" style="background:#FEF2F2; color:#DC2626;"><i class="fas fa-exclamation-circle"></i></div>
-    <h4>Complaint Resolution Process</h4>
-    <p>Step-by-step complaint handling from intake to resolution, including compensation guidelines.</p>
-    <div class="sop-card-footer">
-      <span class="version">v4.0</span>
-      <span>Updated Jun 2026</span>
-      <span class="download" onclick="event.stopPropagation(); showToast('Downloading SOP...');"><i class="fas fa-download"></i> PDF</span>
-    </div>
-  </div>
-  <div class="sop-card" data-category="compliance">
-    <div class="sop-card-icon" style="background:#FFF7ED; color:#C2410C;"><i class="fas fa-shield-alt"></i></div>
-    <h4>Data Privacy & GDPR Compliance</h4>
-    <p>Handling customer data, consent requirements, and breach notification procedures.</p>
-    <div class="sop-card-footer">
-      <span class="version">v5.1</span>
-      <span>Updated Aug 2026</span>
-      <span class="download" onclick="event.stopPropagation(); showToast('Downloading SOP...');"><i class="fas fa-download"></i> PDF</span>
-    </div>
-  </div>
-  <div class="sop-card" data-category="compliance">
-    <div class="sop-card-icon" style="background:#FFF7ED; color:#C2410C;"><i class="fas fa-file-contract"></i></div>
-    <h4>Incident Reporting Procedure</h4>
-    <p>How to report privacy and security incidents within the 1-hour reporting window.</p>
-    <div class="sop-card-footer">
-      <span class="version">v3.0</span>
-      <span>Updated Aug 2026</span>
-      <span class="download" onclick="event.stopPropagation(); showToast('Downloading SOP...');"><i class="fas fa-download"></i> PDF</span>
-    </div>
-  </div>
-  <div class="sop-card" data-category="crm">
-    <div class="sop-card-icon" style="background:#F5F3FF; color:#7C3AED;"><i class="fas fa-laptop-code"></i></div>
-    <h4>CRM Quick Start Guide</h4>
-    <p>Login, navigation, dashboard overview, and basic ticket creation in the new CRM.</p>
-    <div class="sop-card-footer">
-      <span class="version">v1.0</span>
-      <span>Updated Aug 2026</span>
-      <span class="download" onclick="event.stopPropagation(); showToast('Downloading SOP...');"><i class="fas fa-download"></i> PDF</span>
-    </div>
-  </div>
-  <div class="sop-card" data-category="crm">
-    <div class="sop-card-icon" style="background:#F5F3FF; color:#7C3AED;"><i class="fas fa-database"></i></div>
-    <h4>CRM Ticket Categorization & Tags</h4>
-    <p>Standardized categories, tags, and labels for organizing customer tickets.</p>
-    <div class="sop-card-footer">
-      <span class="version">v1.0</span>
-      <span>Updated Aug 2026</span>
-      <span class="download" onclick="event.stopPropagation(); showToast('Downloading SOP...');"><i class="fas fa-download"></i> PDF</span>
-    </div>
-  </div>
-  <div class="sop-card" data-category="product">
-    <div class="sop-card-icon" style="background:#FEF9C3; color:#CA8A04;"><i class="fas fa-box-open"></i></div>
-    <h4>Product Catalog & Feature Guide</h4>
-    <p>Complete product catalog with feature descriptions, pricing tiers, and common troubleshooting.</p>
-    <div class="sop-card-footer">
-      <span class="version">v6.2</span>
-      <span>Updated Jul 2026</span>
-      <span class="download" onclick="event.stopPropagation(); showToast('Downloading SOP...');"><i class="fas fa-download"></i> PDF</span>
-    </div>
-  </div>
-  <div class="sop-card" data-category="product">
-    <div class="sop-card-icon" style="background:#FEF9C3; color:#CA8A04;"><i class="fas fa-wrench"></i></div>
-    <h4>Known Issues & Workarounds</h4>
-    <p>Currently tracked product issues, their status, and customer-facing workarounds.</p>
-    <div class="sop-card-footer">
-      <span class="version">v2.3</span>
-      <span>Updated Aug 2026</span>
-      <span class="download" onclick="event.stopPropagation(); showToast('Downloading SOP...');"><i class="fas fa-download"></i> PDF</span>
+  <div class="doc-grid">
+    <div class="doc-card cat-cs" data-category="cs">
+      <div class="doc-card-top">
+        <div class="doc-type-icon" style="background:var(--cat-cs-soft); color:var(--cat-cs);"><i class="fas fa-file-pdf"></i></div>
+        <div class="doc-info">
+          <h4>SOP for Customer Services</h4>
+          <span class="doc-filename"><i class="fas fa-paperclip"></i> SOP for Customer services.pdf</span>
+        </div>
+      </div>
+      <div class="doc-card-desc">Standard operating procedures for the Customer Services team — covering call handling, email triage, complaint resolution, and escalation workflows.</div>
+      <div class="doc-card-actions">
+        <a class="btn-doc btn-view" href="https://africanbank.sharepoint.com/sites/CSPortal/Shared%20Documents/Customer%20Services%20SOP/SOP%20for%20Customer%20services.pdf" target="_blank"><i class="fas fa-external-link-alt"></i> Open</a>
+        <a class="btn-doc btn-folder" href="https://africanbank.sharepoint.com/sites/CSPortal/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites/CSPortal/Shared%20Documents/Customer%20Services%20SOP" target="_blank"><i class="fas fa-folder-open"></i> Folder</a>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- Modal -->
-<div class="modal-backdrop" id="modalBackdrop">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
-    <div id="modalContent"></div>
+<!-- ════════ Category 2: Investments SOP ════════ -->
+<div class="category-section fade-in fade-in-d2" id="cat-invest">
+  <div class="category-header">
+    <div class="category-icon" style="background:var(--cat-invest-soft); color:var(--cat-invest);"><i class="fas fa-chart-line"></i></div>
+    <h3>Investments SOP</h3>
+    <span class="doc-count">1 document</span>
+  </div>
+  <div class="doc-grid">
+    <div class="doc-card cat-invest" data-category="invest">
+      <div class="doc-card-top">
+        <div class="doc-type-icon" style="background:var(--cat-invest-soft); color:var(--cat-invest);"><i class="fas fa-file-pdf"></i></div>
+        <div class="doc-info">
+          <h4>Investment SOP</h4>
+          <span class="doc-filename"><i class="fas fa-paperclip"></i> Investment SOP.pdf</span>
+        </div>
+      </div>
+      <div class="doc-card-desc">Operating procedures for the Investments team — including investment queries, product guidance, compliance requirements, and escalation paths.</div>
+      <div class="doc-card-actions">
+        <a class="btn-doc btn-view" href="https://africanbank.sharepoint.com/sites/CSPortal/Shared%20Documents/Investments%20SOP/Investment%20SOP.pdf" target="_blank"><i class="fas fa-external-link-alt"></i> Open</a>
+        <a class="btn-doc btn-folder" href="https://africanbank.sharepoint.com/sites/CSPortal/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites/CSPortal/Shared%20Documents/Investments%20SOP" target="_blank"><i class="fas fa-folder-open"></i> Folder</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ Category 3: Funeral SOP ════════ -->
+<div class="category-section fade-in fade-in-d3" id="cat-funeral">
+  <div class="category-header">
+    <div class="category-icon" style="background:var(--cat-funeral-soft); color:var(--cat-funeral);"><i class="fas fa-heart"></i></div>
+    <h3>Funeral SOP</h3>
+    <span class="doc-count">1 document</span>
+  </div>
+  <div class="doc-grid">
+    <div class="doc-card cat-funeral" data-category="funeral">
+      <div class="doc-card-top">
+        <div class="doc-type-icon" style="background:var(--cat-funeral-soft); color:var(--cat-funeral);"><i class="fas fa-file-pdf"></i></div>
+        <div class="doc-info">
+          <h4>Funeral SOP</h4>
+          <span class="doc-filename"><i class="fas fapaperclip"></i> Funeral SOP.pdf</span>
+        </div>
+      </div>
+      <div class="doc-card-desc">Standard procedures for the Funeral team — covering claims processing, documentation requirements, compassionate handling guidelines, and escalation.</div>
+      <div class="doc-card-actions">
+        <a class="btn-doc btn-view" href="https://africanbank.sharepoint.com/sites/CSPortal/Shared%20Documents/Funeral%20SOP/Funeral%20SOP.pdf" target="_blank"><i class="fas fa-external-link-alt"></i> Open</a>
+        <a class="btn-doc btn-folder" href="https://africanbank.sharepoint.com/sites/CSPortal/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites/CSPortal/Shared%20Documents/Funeral%20SOP" target="_blank"><i class="fas fa-folder-open"></i> Folder</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ Category 4: Digital Support SOP ════════ -->
+<div class="category-section fade-in fade-in-d4" id="cat-digital">
+  <div class="category-header">
+    <div class="category-icon" style="background:var(--cat-digital-soft); color:var(--cat-digital);"><i class="fas fa-laptop-code"></i></div>
+    <h3>Digital Support SOP</h3>
+    <span class="doc-count">1 document</span>
+  </div>
+  <div class="doc-grid">
+    <div class="doc-card cat-digital" data-category="digital">
+      <div class="doc-card-top">
+        <div class="doc-type-icon" style="background:var(--cat-digital-soft); color:var(--cat-digital);"><i class="fas fa-file-powerpoint"></i></div>
+        <div class="doc-info">
+          <h4>Troubleshooting Process</h4>
+          <span class="doc-filename"><i class="fas fa-paperclip"></i> Troubleshooting process (Unlocked...).pptx</span>
+        </div>
+      </div>
+      <div class="doc-card-desc">Digital support troubleshooting procedures — covering app issues, online banking errors, card declines, and technical escalation workflows.</div>
+      <div class="doc-card-actions">
+        <a class="btn-doc btn-view" href="https://africanbank.sharepoint.com/sites/CSPortal/Shared%20Documents/Digital%20Support%20SOP/Troubleshooting%20process%20(Unlocked).pptx" target="_blank"><i class="fas fa-external-link-alt"></i> Open</a>
+        <a class="btn-doc btn-folder" href="https://africanbank.sharepoint.com/sites/CSPortal/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites/CSPortal/Shared%20Documents/Digital%20Support%20SOP" target="_blank"><i class="fas fa-folder-open"></i> Folder</a>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -412,19 +481,63 @@ body {
 <div class="toast" id="toast"></div>
 
 <script>
-function filterSOPs(category, btn) {
+/* Intersection Observer for scroll animations */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+
+document.querySelectorAll('.category-section, .doc-card').forEach(el => {
+  observer.observe(el);
+});
+
+function filterCategory(cat, btn) {
   document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
   btn.classList.add('active');
-  const cards = document.querySelectorAll('#sopGrid .sop-card');
-  cards.forEach(card => {
-    card.style.display = (category === 'all' || card.dataset.category === category) ? 'block' : 'none';
+  const sections = document.querySelectorAll('.category-section');
+  sections.forEach(section => {
+    const sectionCat = section.id.replace('cat-', '');
+    if (cat === 'all' || sectionCat === cat) {
+      section.style.display = 'block';
+      section.style.opacity = '0';
+      section.style.transform = 'translateY(16px)';
+      setTimeout(() => {
+        section.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+        section.style.opacity = '1';
+        section.style.transform = 'translateY(0)';
+      }, 50);
+    } else {
+      section.style.display = 'none';
+    }
   });
 }
 
 document.getElementById('sopSearch').addEventListener('input', function() {
   const q = this.value.toLowerCase();
-  document.querySelectorAll('#sopGrid .sop-card').forEach(card => {
-    card.style.display = card.textContent.toLowerCase().includes(q) ? 'block' : 'none';
+  document.querySelectorAll('.doc-card').forEach(card => {
+    const match = card.textContent.toLowerCase().includes(q);
+    card.style.display = match ? 'block' : 'none';
+    if (match) {
+      card.style.opacity = '0';
+      setTimeout(() => {
+        card.style.transition = 'opacity 0.3s ease';
+        card.style.opacity = '1';
+      }, 30);
+    }
+  });
+  /* Also show/hide category sections based on visible cards */
+  document.querySelectorAll('.category-section').forEach(section => {
+    const visibleCards = section.querySelectorAll('.doc-card[style*="display: block"], .doc-card:not([style*="display: none"])');
+    if (q.length > 0) {
+      section.style.display = visibleCards.length > 0 ? 'block' : 'none';
+    } else {
+      section.style.display = 'block';
+    }
   });
   if (q.length > 0) {
     document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
@@ -439,35 +552,6 @@ function showToast(msg) {
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2500);
 }
-
-function openModal(content) {
-  document.getElementById('modalContent').innerHTML = content;
-  document.getElementById('modalBackdrop').classList.add('show');
-}
-function closeModal() {
-  document.getElementById('modalBackdrop').classList.remove('show');
-}
-document.getElementById('modalBackdrop').addEventListener('click', function(e) {
-  if (e.target === this) closeModal();
-});
-
-document.querySelectorAll('.sop-card').forEach(card => {
-  card.addEventListener('click', () => {
-    const title = card.querySelector('h4').textContent;
-    const desc = card.querySelector('p').textContent;
-    const version = card.querySelector('.version').textContent;
-    openModal(`
-      <h3>${title}</h3>
-      <p><strong>Version:</strong> ${version}</p>
-      <p>${desc}</p>
-      <p style="margin-top:12px;">This SOP is maintained by the Knowledge Team. For questions or suggested updates, please submit a change request through the Knowledge Base portal.</p>
-      <div style="display:flex; gap:8px; margin-top:20px;">
-        <button class="btn-primary" onclick="showToast('Downloading PDF...'); closeModal();"><i class="fas fa-download"></i> Download PDF</button>
-        <button class="btn-outline" onclick="showToast('Opening in viewer...'); closeModal();"><i class="fas fa-eye"></i> View Online</button>
-      </div>
-    `);
-  });
-});
 </script>
 </body>
 </html>
