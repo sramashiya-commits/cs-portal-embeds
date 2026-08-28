@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CS Hub — Live Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root {
+  --accent:#2B6B5E; --warm:#C4724E; --green:#059669; --cyan:#0891B2;
+  --gold:#D4A843; --teal-light:#5EEAD4; --amber:#F59E0B;
+  --bg:#0F1A1C; --card:#142428; --card-border:rgba(47,80,76,0.35);
+  --surface:#1A2E30; --text:#E2E8F0; --muted:#94A3B8;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden}
+
+/* ── HERO ── */
+.hero{position:relative;padding:48px 40px 36px;overflow:hidden}
+.hero-orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.25;pointer-events:none}
+.orb-1{width:340px;height:340px;background:var(--accent);top:-80px;left:-60px}
+.orb-2{width:260px;height:260px;background:var(--warm);top:-40px;right:10%}
+.orb-3{width:200px;height:200px;background:var(--teal-light);bottom:-60px;left:30%}
+.orb-4{width:160px;height:160px;background:var(--gold);bottom:-40px;right:5%}
+
+.hero-badge{display:inline-flex;align-items:center;gap:7px;padding:5px 16px;border-radius:50px;font-size:10px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;background:rgba(43,107,94,.15);color:var(--teal-light);border:1px solid rgba(43,107,94,.25);margin-bottom:16px}
+.hero-badge i{font-size:10px}
+
+.hero h1{font-family:'Playfair Display',serif;font-size:38px;font-weight:700;line-height:1.2;background:linear-gradient(90deg,#FFF,var(--teal-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+.hero p{font-size:15px;color:var(--muted);max-width:600px;line-height:1.6}
+
+.hero-line{height:3px;width:100%;margin-top:24px;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--warm))}
+
+/* ── LIVE DASHBOARD PANEL ── */
+.live-panel{margin:0 40px;padding:32px;border-radius:14px;background:linear-gradient(135deg,var(--card) 0%,var(--surface) 100%);border:1px solid var(--card-border);display:flex;align-items:center;gap:28px;position:relative;overflow:hidden}
+.live-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--teal-light),var(--warm));border-radius:14px 14px 0 0}
+.live-panel-glow{position:absolute;width:200px;height:200px;border-radius:50%;background:var(--accent);filter:blur(80px);opacity:.15;right:-40px;bottom:-60px;pointer-events:none}
+
+.live-panel-icon{width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;background:rgba(43,107,94,.2);border:1px solid rgba(43,107,94,.3);flex-shrink:0}
+.live-panel-icon i{font-size:26px;color:var(--teal-light)}
+
+.live-panel-content{flex:1}
+.live-panel-title{font-size:18px;font-weight:700;color:var(--text);margin-bottom:4px}
+.live-panel-desc{font-size:13px;color:var(--muted);line-height:1.5}
+.live-panel-desc strong{color:var(--teal-light)}
+
+.live-panel-pulse{display:flex;align-items:center;gap:8px;margin-top:10px}
+.pulse-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:livePulse 2s ease-in-out infinite}
+@keyframes livePulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+.pulse-label{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--green)}
+
+.live-panel-action{flex-shrink:0}
+.btn-open-dashboard{display:inline-flex;align-items:center;gap:10px;padding:14px 28px;border-radius:12px;font-size:14px;font-weight:700;letter-spacing:.3px;background:var(--accent);color:#fff;border:none;cursor:pointer;transition:all .25s;text-decoration:none;box-shadow:0 4px 20px rgba(43,107,94,.3)}
+.btn-open-dashboard:hover{background:#34867A;transform:translateY(-1px);box-shadow:0 6px 28px rgba(43,107,94,.4)}
+.btn-open-dashboard i{font-size:16px}
+
+/* ── DEPARTMENT SUMMARIES ── */
+.dept-section{padding:36px 40px 20px}
+.dept-section-header{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.dept-section-header h2{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--text)}
+.dept-section-header .accent-dot{width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--warm))}
+.dept-section-subtitle{font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.5}
+
+.dept-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+
+.dept-card{background:var(--card);border:1px solid var(--card-border);border-radius:14px;padding:20px;transition:all .25s;position:relative;overflow:hidden}
+.dept-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:14px 14px 0 0}
+.dept-card:hover{transform:translateY(-3px);border-color:rgba(43,107,94,.5);box-shadow:0 8px 30px rgba(43,107,94,.15)}
+
+/* Per-department accent colors */
+.dept-card.funeral::before{background:linear-gradient(90deg,var(--accent),var(--teal-light))}
+.dept-card.collections::before{background:linear-gradient(90deg,var(--cyan),var(--teal-light))}
+.dept-card.inbound::before{background:linear-gradient(90deg,var(--green),var(--teal-light))}
+.dept-card.service::before{background:linear-gradient(90deg,var(--gold),var(--warm))}
+.dept-card.branch::before{background:linear-gradient(90deg,var(--warm),var(--gold))}
+
+.dept-card-header{display:flex;align-items:flex-start;gap:10px;margin-bottom:16px}
+.dept-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.dept-card.funeral .dept-icon{background:rgba(43,107,94,.15);color:var(--teal-light)}
+.dept-card.collections .dept-icon{background:rgba(8,145,178,.15);color:var(--cyan)}
+.dept-card.inbound .dept-icon{background:rgba(5,150,105,.15);color:var(--green)}
+.dept-card.service .dept-icon{background:rgba(212,168,67,.15);color:var(--gold)}
+.dept-card.branch .dept-icon{background:rgba(196,114,78,.15);color:var(--warm)}
+
+.dept-card-title{font-size:13px;font-weight:700;line-height:1.3;color:var(--text);margin-bottom:2px}
+.dept-card-subtitle{font-size:10px;color:var(--muted);letter-spacing:.5px;text-transform:uppercase}
+
+.dept-metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.metric{background:var(--surface);border-radius:8px;padding:10px 12px}
+.metric-label{font-size:9px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.metric-value{font-size:20px;font-weight:700;font-family:'DM Sans',sans-serif}
+.metric-value.good{color:var(--green)}
+.metric-value.warn{color:var(--amber)}
+.metric-value.bad{color:#EF4444}
+.metric-value.neutral{color:var(--text)}
+.metric-value.accent{color:var(--teal-light)}
+
+/* Donut in metric */
+.metric-donut{display:flex;align-items:center;gap:8px}
+.mini-donut{width:36px;height:36px;border-radius:50%;position:relative;flex-shrink:0}
+.mini-donut svg{width:36px;height:36px;transform:rotate(-90deg)}
+.mini-donut circle{fill:none;stroke-width:4;cx:18;cy:18;r:14}
+.mini-donut .track{stroke:rgba(255,255,255,.08)}
+.mini-donut .fill-good{stroke:var(--green);stroke-linecap:round}
+.mini-donut .fill-warn{stroke:var(--amber);stroke-linecap:round}
+.mini-donut .fill-bad{stroke:#EF4444;stroke-linecap:round}
+
+/* ── DATA NOTICE ── */
+.data-notice{padding:20px 40px;display:flex;align-items:flex-start;gap:12px}
+.data-notice-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:rgba(8,145,178,.12);color:var(--cyan);font-size:14px;flex-shrink:0}
+.data-notice-text{font-size:12px;color:var(--muted);line-height:1.6}
+.data-notice-text strong{color:var(--text)}
+
+/* ── FOOTER ── */
+.dashboard-footer{padding:20px 40px;border-top:1px solid var(--card-border);display:flex;align-items:center;justify-content:space-between}
+.dashboard-footer span{font-size:11px;color:var(--muted)}
+.dashboard-footer a{font-size:11px;color:var(--teal-light);text-decoration:none}
+.dashboard-footer a:hover{text-decoration:underline}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;right:24px;padding:14px 22px;border-radius:12px;background:var(--surface);border:1px solid var(--card-border);color:var(--text);font-size:13px;font-weight:500;display:flex;align-items:center;gap:10px;transform:translateY(100px);opacity:0;transition:all .35s;z-index:100;box-shadow:0 8px 30px rgba(0,0,0,.3)}
+.toast.show{transform:translateY(0);opacity:1}
+.toast i{color:var(--teal-light)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1200px){.dept-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:900px){
+  .live-panel{flex-direction:column;align-items:stretch;text-align:center;gap:20px}
+  .live-panel-icon{margin:0 auto}
+  .live-panel-action{margin:0 auto}
+}
+@media(max-width:768px){
+  .hero{padding:32px 20px 24px}
+  .hero h1{font-size:28px}
+  .live-panel{margin:0 20px}
+  .dept-section{padding:24px 20px 20px}
+  .dept-grid{grid-template-columns:1fr 1fr}
+  .dashboard-footer{padding:16px 20px;flex-wrap:wrap;gap:8px}
+  .data-notice{padding:16px 20px}
+}
+@media(max-width:480px){.dept-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-orb orb-1"></div>
+  <div class="hero-orb orb-2"></div>
+  <div class="hero-orb orb-3"></div>
+  <div class="hero-orb orb-4"></div>
+  <div class="hero-badge"><i class="fa-solid fa-signal"></i> Live Operations Dashboard</div>
+  <h1>Real-Time Contact Centre Performance</h1>
+  <p>Live metrics across all Customer Services departments. Open the platform for auto-refreshing data, or review each department's summary below.</p>
+  <div class="hero-line"></div>
+</section>
+
+<!-- LIVE DASHBOARD PANEL -->
+<div class="live-panel">
+  <div class="live-panel-glow"></div>
+  <div class="live-panel-icon"><i class="fa-solid fa-chart-line"></i></div>
+  <div class="live-panel-content">
+    <div class="live-panel-title">Live Wallboard Dashboard</div>
+    <div class="live-panel-desc">Open the full dashboard for <strong>real-time auto-refreshing metrics</strong> including service levels, abandoned rates, agent availability, and queue times across all 5 departments.</div>
+    <div class="live-panel-pulse">
+      <div class="pulse-dot"></div>
+      <span class="pulse-label">Platform Live</span>
+    </div>
+  </div>
+  <div class="live-panel-action">
+    <a class="btn-open-dashboard" href="http://mpwpconmrq1/IWP/Marquee/p/Customer%20Services/" target="_blank" title="Open live dashboard">
+      <i class="fa-solid fa-up-right-from-square"></i> Open Live Dashboard
+    </a>
+  </div>
+</div>
+
+<!-- DEPARTMENT SUMMARIES -->
+<section class="dept-section">
+  <div class="dept-section-header">
+    <div class="accent-dot"></div>
+    <h2>Department Summaries</h2>
+  </div>
+  <p class="dept-section-subtitle">Snapshot of each department's current performance metrics. Click <strong>Open Live Dashboard</strong> above for real-time auto-refreshing data.</p>
+
+  <div class="dept-grid">
+
+    <!-- AB Fun CS = Funeral -->
+    <div class="dept-card funeral">
+      <div class="dept-card-header">
+        <div class="dept-icon"><i class="fa-solid fa-hand-holding-heart"></i></div>
+        <div>
+          <div class="dept-card-title">AB Funeral CS</div>
+          <div class="dept-card-subtitle">Funeral Department</div>
+        </div>
+      </div>
+      <div class="dept-metrics">
+        <div class="metric">
+          <div class="metric-label">Service Level</div>
+          <div class="metric-donut">
+            <div class="mini-donut"><svg viewBox="0 0 36 36"><circle class="track"/><circle class="fill-good" stroke-dasharray="88 100" stroke-dashoffset="0"/></svg></div>
+            <div class="metric-value good" id="fun-sl">100%</div>
+          </div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Abandoned</div>
+          <div class="metric-value accent" id="fun-ab">4%</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Available</div>
+          <div class="metric-value neutral" id="fun-avail">4</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Logged On</div>
+          <div class="metric-value neutral" id="fun-log">10</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Answered</div>
+          <div class="metric-value neutral" id="fun-ans">4</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Received</div>
+          <div class="metric-value neutral" id="fun-recv">56</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Waiting</div>
+          <div class="metric-value good" id="fun-wait">0</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Longest Wait</div>
+          <div class="metric-value neutral" id="fun-lw">00:00</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABC_Collections = Customer Services -->
+    <div class="dept-card collections">
+      <div class="dept-card-header">
+        <div class="dept-icon"><i class="fa-solid fa-headset"></i></div>
+        <div>
+          <div class="dept-card-title">ABC Collections</div>
+          <div class="dept-card-subtitle">Customer Services</div>
+        </div>
+      </div>
+      <div class="dept-metrics">
+        <div class="metric">
+          <div class="metric-label">Service Level</div>
+          <div class="metric-donut">
+            <div class="mini-donut"><svg viewBox="0 0 36 36"><circle class="track"/><circle class="fill-good" stroke-dasharray="100 100" stroke-dashoffset="0"/></svg></div>
+            <div class="metric-value good" id="col-sl">100%</div>
+          </div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Abandoned</div>
+          <div class="metric-value good" id="col-ab">0%</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Available</div>
+          <div class="metric-value neutral" id="col-avail">18</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Logged On</div>
+          <div class="metric-value neutral" id="col-log">37</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Answered</div>
+          <div class="metric-value neutral" id="col-ans">8</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Received</div>
+          <div class="metric-value neutral" id="col-recv">576</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Waiting</div>
+          <div class="metric-value good" id="col-wait">0</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Longest Wait</div>
+          <div class="metric-value neutral" id="col-lw">00:00</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABS_INVESTMENTS_INBOUND -->
+    <div class="dept-card inbound">
+      <div class="dept-card-header">
+        <div class="dept-icon"><i class="fa-solid fa-phone-volume"></i></div>
+        <div>
+          <div class="dept-card-title">Investments Inbound</div>
+          <div class="dept-card-subtitle">ABS Investments</div>
+        </div>
+      </div>
+      <div class="dept-metrics">
+        <div class="metric">
+          <div class="metric-label">Service Level</div>
+          <div class="metric-donut">
+            <div class="mini-donut"><svg viewBox="0 0 36 36"><circle class="track"/><circle class="fill-good" stroke-dasharray="93 100" stroke-dashoffset="0"/></svg></div>
+            <div class="metric-value good" id="inv-sl">93%</div>
+          </div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Abandoned</div>
+          <div class="metric-value good" id="inv-ab">0%</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Available</div>
+          <div class="metric-value neutral" id="inv-avail">3</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Logged On</div>
+          <div class="metric-value neutral" id="inv-log">28</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Answered</div>
+          <div class="metric-value neutral" id="inv-ans">3</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Received</div>
+          <div class="metric-value neutral" id="inv-recv">74</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Waiting</div>
+          <div class="metric-value good" id="inv-wait">0</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Longest Wait</div>
+          <div class="metric-value neutral" id="inv-lw">00:00</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABS_INVESTMENTS_SERVICE -->
+    <div class="dept-card service">
+      <div class="dept-card-header">
+        <div class="dept-icon"><i class="fa-solid fa-user-gear"></i></div>
+        <div>
+          <div class="dept-card-title">Investments Service</div>
+          <div class="dept-card-subtitle">ABS Investments</div>
+        </div>
+      </div>
+      <div class="dept-metrics">
+        <div class="metric">
+          <div class="metric-label">Service Level</div>
+          <div class="metric-donut">
+            <div class="mini-donut"><svg viewBox="0 0 36 36"><circle class="track"/><circle class="fill-warn" stroke-dasharray="82 100" stroke-dashoffset="0"/></svg></div>
+            <div class="metric-value warn" id="svs-sl">82%</div>
+          </div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Abandoned</div>
+          <div class="metric-value good" id="svs-ab">0%</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Available</div>
+          <div class="metric-value neutral" id="svs-avail">3</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Logged On</div>
+          <div class="metric-value neutral" id="svs-log">28</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Answered</div>
+          <div class="metric-value neutral" id="svs-ans">1</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Received</div>
+          <div class="metric-value neutral" id="svs-recv">56</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Waiting</div>
+          <div class="metric-value good" id="svs-wait">0</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Longest Wait</div>
+          <div class="metric-value neutral" id="svs-lw">00:00</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABS_INVESTMENTS_BRANCHSUPPORT -->
+    <div class="dept-card branch">
+      <div class="dept-card-header">
+        <div class="dept-icon"><i class="fa-solid fa-building-columns"></i></div>
+        <div>
+          <div class="dept-card-title">Investments Branch Support</div>
+          <div class="dept-card-subtitle">ABS Investments</div>
+        </div>
+      </div>
+      <div class="dept-metrics">
+        <div class="metric">
+          <div class="metric-label">Service Level</div>
+          <div class="metric-donut">
+            <div class="mini-donut"><svg viewBox="0 0 36 36"><circle class="track"/><circle class="fill-warn" stroke-dasharray="84 100" stroke-dashoffset="0"/></svg></div>
+            <div class="metric-value warn" id="brn-sl">84%</div>
+          </div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Abandoned</div>
+          <div class="metric-value good" id="brn-ab">0%</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Available</div>
+          <div class="metric-value neutral" id="brn-avail">3</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Logged On</div>
+          <div class="metric-value neutral" id="brn-log">28</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Answered</div>
+          <div class="metric-value neutral" id="brn-ans">6</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Received</div>
+          <div class="metric-value neutral" id="brn-recv">81</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Waiting</div>
+          <div class="metric-value good" id="brn-wait">0</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Longest Wait</div>
+          <div class="metric-value neutral" id="brn-lw">00:00</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /dept-grid -->
+</section>
+
+<!-- DATA NOTICE -->
+<div class="data-notice">
+  <div class="data-notice-icon"><i class="fa-solid fa-circle-info"></i></div>
+  <div class="data-notice-text">
+    <strong>How this works:</strong> The department summary cards above show a snapshot of the latest available metrics. For <strong>live auto-refreshing data</strong>, click the <strong>Open Live Dashboard</strong> button — this opens the platform wallboard directly, which refreshes automatically.<br>
+    <em>Note: The live dashboard opens on the internal network only (HTTP). If IT enables HTTPS on the platform, the dashboard can be embedded directly in this page for a seamless experience.</em>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="dashboard-footer">
+  <span>Data sourced from IWP/Marquee platform &bull; Department summaries are static snapshots</span>
+  <a href="http://mpwpconmrq1/IWP/Marquee/p/Customer%20Services/" target="_blank">Open Live Dashboard &rarr;</a>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><i class="fa-solid fa-circle-check"></i><span id="toastMsg"></span></div>
+
+<script>
+/* ── DEPT METRIC COLOUR LOGIC ── */
+function colorServiceLevel(el, val) {
+  if (val >= 90) { el.className = 'metric-value good'; }
+  else if (val >= 80) { el.className = 'metric-value warn'; }
+  else { el.className = 'metric-value bad'; }
+}
+
+function colorAbandoned(el, val) {
+  if (val <= 5) { el.className = 'metric-value good'; }
+  else if (val <= 15) { el.className = 'metric-value warn'; }
+  else { el.className = 'metric-value bad'; }
+}
+
+function colorWaiting(el, val) {
+  if (val === 0) { el.className = 'metric-value good'; }
+  else { el.className = 'metric-value neutral'; }
+}
+
+/* Apply colour logic on load */
+function applyMetricColors() {
+  const depts = {
+    fun: { sl: 100, ab: 4, wait: 0 },
+    col: { sl: 100, ab: 0, wait: 0 },
+    inv: { sl: 93, ab: 0, wait: 0 },
+    svs: { sl: 82, ab: 0, wait: 0 },
+    brn: { sl: 84, ab: 0, wait: 0 }
+  };
+  for (const [d, m] of Object.entries(depts)) {
+    colorServiceLevel(document.getElementById(d + '-sl'), m.sl);
+    colorAbandoned(document.getElementById(d + '-ab'), m.ab);
+    colorWaiting(document.getElementById(d + '-wait'), m.wait);
+  }
+}
+
+/* ── TOAST ── */
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+/* ── INIT ── */
+document.addEventListener('DOMContentLoaded', () => {
+  applyMetricColors();
+});
+</script>
+</body>
+</html>
