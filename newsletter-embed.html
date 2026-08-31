@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CS Hub — Newsletters</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --ab-navy: #001D40; --ab-royal: #00558D; --ab-cyan: #00A9E0; --ab-green: #8CC63E; --ab-white: #FFFFFF;
+  --navy-light: #002A55; --navy-ultra-light: #E6EAF2; --royal-light: #1A6FA3;
+  --royal-bg: rgba(0,85,141,.06); --cyan-bg: rgba(0,169,224,.06); --green-bg: rgba(140,198,62,.06); --navy-bg: rgba(0,29,64,.05);
+  --bg: #F8F9FB; --bg-subtle: #F0F2F6; --card: #FFFFFF; --card-hover: #FEFEFE;
+  --card-border: rgba(0,29,64,.08); --card-shadow: 0 1px 3px rgba(0,29,64,.06), 0 4px 14px rgba(0,29,64,.04);
+  --card-shadow-hover: 0 6px 24px rgba(0,29,64,.1);
+  --text: #1A1A2E; --text-secondary: #3D3D56; --muted: #6B7280; --muted-light: #9CA3AF;
+  --font-display: 'Playfair Display', Georgia, serif; --font-body: 'DM Sans', system-ui, sans-serif;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1); --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+body { font-family: var(--font-body); color: var(--text); line-height: 1.6; overflow-x: hidden; background: var(--bg); min-height: 100vh; }
+body::before { content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(ellipse 80% 60% at 15% 20%, rgba(0,85,141,0.04) 0%, transparent 60%),
+              radial-gradient(ellipse 60% 50% at 85% 75%, rgba(0,169,224,0.03) 0%, transparent 50%),
+              radial-gradient(ellipse 70% 40% at 50% 10%, rgba(140,198,62,0.02) 0%, transparent 40%); }
+
+/* NAV */
+.top-nav { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; height: 64px; background: var(--card); border-bottom: 1px solid var(--card-border); box-shadow: var(--card-shadow); }
+.nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.nav-logo { width: 36px; height: 36px; border-radius: 8px; background: var(--ab-navy); display: flex; align-items: center; justify-content: center; font-size: 16px; color: #fff; }
+.nav-title { font-family: var(--font-display); font-size: 18px; font-weight: 700; color: var(--ab-navy); letter-spacing: 0.3px; }
+.nav-title-accent { color: var(--ab-cyan); }
+.nav-links { display: flex; align-items: center; gap: 2px; }
+.nav-link { display: flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 8px; font-size: 12.5px; font-weight: 500; color: var(--muted); text-decoration: none; transition: all 0.25s ease; position: relative; }
+.nav-link::after { content: ''; position: absolute; bottom: 0; left: 14px; right: 14px; height: 2px; border-radius: 2px; opacity: 0; transition: opacity 0.25s ease; }
+.nav-link-home::after { background: var(--ab-navy); }
+.nav-link-news::after { background: var(--ab-cyan); }
+.nav-link-announce::after { background: var(--ab-green); }
+.nav-link-training::after { background: var(--ab-green); }
+.nav-link-kb::after { background: var(--ab-royal); }
+.nav-link-mag::after { background: var(--ab-cyan); }
+.nav-link:hover { color: var(--text); background: var(--navy-bg); }
+.nav-link:hover::after { opacity: 1; }
+.nav-link.active { color: var(--text); font-weight: 600; }
+.nav-link.active::after { opacity: 1; }
+.nav-toggle { display: none; background: none; border: none; font-size: 20px; color: var(--ab-navy); cursor: pointer; padding: 8px; }
+
+/* PAGE HERO */
+.page-hero { position: relative; z-index: 1; padding: 56px 40px 36px; text-align: center; }
+.page-hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 18px; border-radius: 50px; font-size: 11px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; background: var(--navy-bg); color: var(--ab-navy); border: 1px solid var(--card-border); margin-bottom: 16px; }
+.page-hero-badge i { font-size: 7px; color: var(--ab-green); }
+.page-hero h1 { font-family: var(--font-display); font-size: 38px; font-weight: 700; color: var(--ab-navy); margin-bottom: 12px; line-height: 1.15; }
+.page-hero-sub { font-size: 15px; color: var(--muted); max-width: 520px; margin: 0 auto 20px; line-height: 1.6; }
+.page-hero-line { width: 60px; height: 3px; border-radius: 3px; background: var(--ab-cyan); margin: 0 auto; }
+
+/* SECTION HEADER */
+.section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+.accent-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ab-green); flex-shrink: 0; }
+.section-header h2 { font-family: var(--font-display); font-size: 22px; font-weight: 600; color: var(--ab-navy); }
+
+/* TOAST */
+.toast { position: fixed; bottom: 28px; right: 28px; z-index: 999; padding: 14px 22px; border-radius: 12px; font-size: 13px; font-weight: 500; color: #fff; background: var(--ab-navy); box-shadow: 0 8px 32px rgba(0,29,64,.18); transform: translateY(20px); opacity: 0; transition: all 0.4s var(--ease-out); pointer-events: none; display: flex; align-items: center; gap: 10px; }
+.toast.show { transform: translateY(0); opacity: 1; pointer-events: auto; }
+.toast i { color: var(--ab-green); font-size: 15px; }
+
+/* REVEAL ANIMATION */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* FOOTER */
+.site-footer { position: relative; z-index: 1; background: var(--ab-navy); color: rgba(255,255,255,.7); padding: 36px 32px 28px; margin-top: 48px; }
+.footer-top { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 20px; }
+.footer-brand { display: flex; align-items: center; gap: 10px; }
+.footer-logo { width: 32px; height: 32px; border-radius: 7px; background: rgba(255,255,255,.08); display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--ab-cyan); }
+.footer-name { font-family: var(--font-display); font-size: 16px; font-weight: 600; color: #fff; }
+.footer-links { display: flex; gap: 16px; flex-wrap: wrap; }
+.footer-links a { font-size: 12px; color: rgba(255,255,255,.5); text-decoration: none; transition: color 0.25s; }
+.footer-links a:hover { color: var(--ab-cyan); }
+.footer-divider { height: 1px; background: rgba(255,255,255,.08); margin-bottom: 16px; }
+.footer-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 11px; color: rgba(255,255,255,.35); }
+.footer-bottom a { color: rgba(255,255,255,.4); text-decoration: none; }
+.footer-bottom a:hover { color: var(--ab-cyan); }
+
+/* RESPONSIVE NAV */
+@media (max-width: 900px) {
+  .nav-links { display: none; flex-direction: column; position: absolute; top: 64px; left: 0; right: 0; background: var(--card); padding: 12px 20px; border-bottom: 1px solid var(--card-border); box-shadow: var(--card-shadow); gap: 2px; }
+  .nav-links.open { display: flex; }
+  .nav-toggle { display: block; }
+}
+@media (max-width: 600px) {
+  .page-hero h1 { font-size: 26px; }
+  .page-hero { padding: 36px 20px 24px; }
+  .top-nav { padding: 0 16px; }
+}
+
+
+/* NEWSLETTER-SPECIFIC */
+.content-wrapper { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.featured-card { background: var(--card); border-radius: 18px; border: 1px solid var(--card-border); box-shadow: var(--card-shadow); overflow: hidden; transition: box-shadow 0.35s var(--ease-out); margin-bottom: 36px; }
+.featured-card:hover { box-shadow: var(--card-shadow-hover); }
+.featured-inner { display: grid; grid-template-columns: 200px 1fr; min-height: 280px; }
+.featured-visual { background: var(--ab-navy); display: flex; align-items: center; justify-content: center; position: relative; }
+.featured-visual::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at center, rgba(0,169,224,0.1), transparent 70%); }
+.featured-icon-wrap { width: 80px; height: 80px; border-radius: 20px; background: rgba(0,169,224,0.12); display: flex; align-items: center; justify-content: center; font-size: 32px; color: var(--ab-cyan); }
+.featured-content { padding: 32px; display: flex; flex-direction: column; justify-content: center; }
+.featured-label { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 50px; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; background: var(--cyan-bg); color: var(--ab-cyan); margin-bottom: 12px; }
+.featured-title { font-family: var(--font-display); font-size: 24px; font-weight: 700; color: var(--ab-navy); margin-bottom: 10px; line-height: 1.2; }
+.featured-body { font-size: 13.5px; color: var(--muted); line-height: 1.6; margin-bottom: 16px; }
+.featured-highlights { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+.highlight-tag { padding: 4px 12px; border-radius: 6px; font-size: 10px; font-weight: 600; background: var(--bg-subtle); color: var(--text-secondary); border: 1px solid var(--card-border); }
+.featured-cta { display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; border-radius: 10px; font-size: 13px; font-weight: 600; background: var(--ab-navy); color: #fff; text-decoration: none; transition: background 0.25s; }
+.featured-cta:hover { background: var(--navy-light); }
+.newsletter-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 36px; }
+.newsletter-card { background: var(--card); border-radius: 14px; border: 1px solid var(--card-border); box-shadow: var(--card-shadow); padding: 24px; transition: all 0.35s var(--ease-out); cursor: pointer; }
+.newsletter-card:hover { box-shadow: var(--card-shadow-hover); transform: translateY(-3px); }
+.newsletter-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 14px 14px 0 0; opacity: 0; transition: opacity 0.35s; }
+.newsletter-card:hover::before { opacity: 1; }
+.nl-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 14px; }
+.nl-blue { background: var(--royal-bg); color: var(--ab-royal); }
+.nl-teal { background: var(--cyan-bg); color: var(--ab-cyan); }
+.nl-warm { background: var(--navy-bg); color: var(--ab-navy); }
+.nl-green { background: var(--green-bg); color: var(--ab-green); }
+.nl-cyan { background: var(--cyan-bg); color: var(--ab-cyan); }
+.nl-edition { font-size: 11px; font-weight: 600; color: var(--muted-light); margin-bottom: 6px; }
+.nl-title { font-family: var(--font-display); font-size: 17px; font-weight: 600; color: var(--ab-navy); margin-bottom: 8px; line-height: 1.3; }
+.nl-excerpt { font-size: 12.5px; color: var(--muted); line-height: 1.5; margin-bottom: 14px; }
+.nl-meta { display: flex; gap: 12px; font-size: 11px; color: var(--muted-light); }
+.nl-date { display: flex; align-items: center; gap: 5px; }
+.nl-read { display: flex; align-items: center; gap: 5px; color: var(--ab-cyan); font-weight: 600; }
+.subscribe-card { background: var(--card); border-radius: 14px; border: 1px solid var(--card-border); box-shadow: var(--card-shadow); padding: 28px; text-align: center; margin-bottom: 36px; }
+.subscribe-input { width: 100%; max-width: 380px; padding: 11px 16px; border-radius: 10px; border: 1px solid var(--card-border); font-size: 13px; color: var(--text); background: var(--bg); outline: none; transition: border 0.25s; }
+.subscribe-input:focus { border-color: var(--ab-cyan); }
+.subscribe-btn { padding: 11px 24px; border-radius: 10px; border: none; background: var(--ab-cyan); color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.25s; margin-left: 8px; }
+.subscribe-btn:hover { background: #0090c0; }
+.archive-item { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border-radius: 10px; background: var(--bg-subtle); border: 1px solid var(--card-border); margin-bottom: 10px; transition: all 0.25s; cursor: pointer; }
+.archive-item:hover { background: var(--card); box-shadow: var(--card-shadow); }
+.archive-icon { width: 36px; height: 36px; border-radius: 8px; background: var(--navy-bg); display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--ab-navy); }
+.archive-info { flex: 1; }
+.archive-arrow { color: var(--muted-light); font-size: 13px; }
+@media (max-width: 900px) { .featured-inner { grid-template-columns: 1fr; } .newsletter-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 600px) { .newsletter-grid { grid-template-columns: 1fr; } }
+
+</style>
+</head>
+<body>
+
+<!-- ═══ Background ═══ -->
+
+
+<!-- ═══════════════════════════════════════════════
+     NAVIGATION BAR
+     ═══════════════════════════════════════════════ -->
+<nav class="top-nav">
+  <a href="https://africanbank.sharepoint.com/sites/CSPortal" class="nav-brand" target="_parent">
+    <div class="nav-logo"><i class="fas fa-headset"></i></div>
+    <div class="nav-title">CS <span class="nav-title-accent">Hub</span></div>
+  </a>
+  <div class="nav-links" id="navLinks">
+    <a href="https://africanbank.sharepoint.com/sites/CSPortal" class="nav-link nav-link-home" target="_parent"><i class="fas fa-home"></i> Home</a>
+    <a href="https://africanbank.sharepoint.com/sites/CSPortal/SitePages/Newsletters.aspx" class="nav-link nav-link-news active" target="_parent"><i class="fas fa-newspaper"></i> Newsletters</a>
+    <a href="https://africanbank.sharepoint.com/sites/CSPortal/SitePages/Announcements.aspx" class="nav-link nav-link-announce" target="_parent"><i class="fas fa-bullhorn"></i> Announcements</a>
+    <a href="https://africanbank.sharepoint.com/sites/CSPortal/SitePages/Training.aspx" class="nav-link nav-link-training" target="_parent"><i class="fas fa-graduation-cap"></i> Training</a>
+    <a href="https://africanbank.sharepoint.com/sites/CSPortal/SitePages/Knowledge-Base(2).aspx" class="nav-link nav-link-kb" target="_parent"><i class="fas fa-book-open"></i> Knowledge Base</a>
+    <a href="https://africanbank.sharepoint.com/sites/CSPortal/SitePages/Magazine-&-Spotlight.aspx" class="nav-link nav-link-mag" target="_parent"><i class="fas fa-star"></i> Beyond the Call Times</a>
+  </div>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu"><i class="fas fa-bars"></i></button>
+</nav>
+
+<!-- ═══ Content ═══ -->
+<div class="content-wrapper">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="hero">
+    <div class="hero-badge"><i class="fas fa-circle"></i> Customer Service Portal</div>
+    <h1>Newsletters</h1>
+    <p class="hero-sub">Stay informed with the latest team updates, performance highlights, and important news from the Customer Service division.</p>
+    <div class="hero-line"></div>
+  </section>
+
+  <!-- ═══ FEATURED NEWSLETTER ═══ -->
+  <section class="newsletter-featured">
+    <div class="content-card">
+      <div class="featured-inner">
+        <div class="featured-visual">
+          <div class="featured-icon-wrap">
+            <i class="fas fa-newspaper"></i>
+          </div>
+          <div class="featured-edition">Latest Edition</div>
+          <div class="featured-date">August 2026</div>
+        </div>
+        <div class="featured-content">
+          <div class="featured-label"><i class="fas fa-sparkles"></i> Featured Newsletter</div>
+          <h3 class="featured-title">CS Hub Monthly Newsletter — August 2026</h3>
+          <div class="featured-body">
+            <p>This month we celebrate our <strong>88% service level</strong> achievement in General Servicing and the outstanding <strong>201% volume performance</strong> in Investments. We also introduce the upcoming <strong>Customer Service Forum</strong> — a new platform for collaboration and shared learning.</p>
+            <p>Inside: Performance dashboards, team spotlights, training updates, and important claims submission reminders. Don't miss the launch of our new Knowledge Base!</p>
+          </div>
+          <div class="featured-highlights">
+            <span class="highlight-tag"><i class="fas fa-chart-line"></i> Performance</span>
+            <span class="highlight-tag"><i class="fas fa-users"></i> Team News</span>
+            <span class="highlight-tag"><i class="fas fa-graduation-cap"></i> Training</span>
+            <span class="highlight-tag"><i class="fas fa-book-open"></i> KB Launch</span>
+          </div>
+          <a href="#" class="featured-cta" onclick="showToast('Opening the August newsletter...'); return false;">Read This Edition <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ NEWSLETTER GRID ═══ -->
+  <section class="newsletter-section">
+    <div class="section-header">
+      <div class="accent-dot"></div>
+      <h2>Previous Editions</h2>
+    </div>
+    <div class="newsletter-grid reveal">
+      <a href="#" class="newsletter-card nl-teal" onclick="showToast('Opening July 2026 newsletter'); return false;">
+        <div class="nl-icon"><i class="fas fa-newspaper"></i></div>
+        <div class="nl-edition">Edition 07</div>
+        <div class="nl-title">July 2026 Newsletter</div>
+        <div class="nl-excerpt">Mid-year performance review, new SOP updates for funeral claims, and digital channel expansion highlights.</div>
+        <div class="nl-meta">
+          <span class="nl-date"><i class="fas fa-calendar"></i> Jul 2026</span>
+          <span class="nl-read">Read <i class="fas fa-arrow-right"></i></span>
+        </div>
+      </a>
+      <a href="#" class="newsletter-card nl-warm" onclick="showToast('Opening June 2026 newsletter'); return false;">
+        <div class="nl-icon"><i class="fas fa-newspaper"></i></div>
+        <div class="nl-edition">Edition 06</div>
+        <div class="nl-title">June 2026 Newsletter</div>
+        <div class="nl-excerpt">Customer experience initiatives, CSAT results, and the introduction of our new training schedule.</div>
+        <div class="nl-meta">
+          <span class="nl-date"><i class="fas fa-calendar"></i> Jun 2026</span>
+          <span class="nl-read">Read <i class="fas fa-arrow-right"></i></span>
+        </div>
+      </a>
+      <a href="#" class="newsletter-card nl-green" onclick="showToast('Opening May 2026 newsletter'); return false;">
+        <div class="nl-icon"><i class="fas fa-newspaper"></i></div>
+        <div class="nl-edition">Edition 05</div>
+        <div class="nl-title">May 2026 Newsletter</div>
+        <div class="nl-excerpt">Claims submission best practices, team achievements, and the launch of the Beyond the Call Times magazine.</div>
+        <div class="nl-meta">
+          <span class="nl-date"><i class="fas fa-calendar"></i> May 2026</span>
+          <span class="nl-read">Read <i class="fas fa-arrow-right"></i></span>
+        </div>
+      </a>
+      <a href="#" class="newsletter-card nl-cyan" onclick="showToast('Opening April 2026 newsletter'); return false;">
+        <div class="nl-icon"><i class="fas fa-newspaper"></i></div>
+        <div class="nl-edition">Edition 04</div>
+        <div class="nl-title">April 2026 Newsletter</div>
+        <div class="nl-excerpt">Investment line milestones, Q1 performance wrap, and new team member introductions.</div>
+        <div class="nl-meta">
+          <span class="nl-date"><i class="fas fa-calendar"></i> Apr 2026</span>
+          <span class="nl-read">Read <i class="fas fa-arrow-right"></i></span>
+        </div>
+      </a>
+      <a href="#" class="newsletter-card nl-cyan" onclick="showToast('Opening March 2026 newsletter'); return false;">
+        <div class="nl-icon"><i class="fas fa-newspaper"></i></div>
+        <div class="nl-edition">Edition 03</div>
+        <div class="nl-title">March 2026 Newsletter</div>
+        <div class="nl-excerpt">Digital banking channel updates, new KPIs for the service team, and upcoming training workshops.</div>
+        <div class="nl-meta">
+          <span class="nl-date"><i class="fas fa-calendar"></i> Mar 2026</span>
+          <span class="nl-read">Read <i class="fas fa-arrow-right"></i></span>
+        </div>
+      </a>
+      <a href="#" class="newsletter-card nl-blue" onclick="showToast('Opening February 2026 newsletter'); return false;">
+        <div class="nl-icon"><i class="fas fa-newspaper"></i></div>
+        <div class="nl-edition">Edition 02</div>
+        <div class="nl-title">February 2026 Newsletter</div>
+        <div class="nl-excerpt">Year of service excellence launch, funeral claims process improvements, and team-building highlights.</div>
+        <div class="nl-meta">
+          <span class="nl-date"><i class="fas fa-calendar"></i> Feb 2026</span>
+          <span class="nl-read">Read <i class="fas fa-arrow-right"></i></span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ═══ SUBSCRIBE ═══ -->
+  <section class="subscribe-section reveal">
+    <div class="subscribe-card">
+      <div class="subscribe-icon"><i class="fas fa-bell"></i></div>
+      <h3 class="subscribe-title">Never Miss an Edition</h3>
+      <p class="subscribe-desc">Get every newsletter delivered straight to your inbox. Stay updated on team performance, new resources, and upcoming events.</p>
+      <div class="subscribe-form">
+        <input type="email" class="subscribe-input" placeholder="Your email address" id="subscribeEmail">
+        <button class="subscribe-btn" onclick="handleSubscribe()">Subscribe</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ARCHIVE ═══ -->
+  <section class="archive-section">
+    <div class="section-header">
+      <div class="accent-dot"></div>
+      <h2>Archive</h2>
+    </div>
+    <div class="archive-grid reveal">
+      <a href="#" class="archive-item" onclick="showToast('Opening January 2026 newsletter'); return false;">
+        <div class="archive-icon"><i class="fas fa-file-lines"></i></div>
+        <div class="archive-info">
+          <div class="archive-name">January 2026 Newsletter</div>
+          <div class="archive-date-small">Edition 01 — Jan 2026</div>
+        </div>
+        <i class="fas fa-chevron-right archive-arrow"></i>
+      </a>
+      <a href="#" class="archive-item" onclick="showToast('Opening December 2025 newsletter'); return false;">
+        <div class="archive-icon"><i class="fas fa-file-lines"></i></div>
+        <div class="archive-info">
+          <div class="archive-name">December 2025 Newsletter</div>
+          <div class="archive-date-small">Holiday Edition — Dec 2025</div>
+        </div>
+        <i class="fas fa-chevron-right archive-arrow"></i>
+      </a>
+      <a href="#" class="archive-item" onclick="showToast('Opening November 2025 newsletter'); return false;">
+        <div class="archive-icon"><i class="fas fa-file-lines"></i></div>
+        <div class="archive-info">
+          <div class="archive-name">November 2025 Newsletter</div>
+          <div class="archive-date-small">Edition 11 — Nov 2025</div>
+        </div>
+        <i class="fas fa-chevron-right archive-arrow"></i>
+      </a>
+      <a href="#" class="archive-item" onclick="showToast('Opening October 2025 newsletter'); return false;">
+        <div class="archive-icon"><i class="fas fa-file-lines"></i></div>
+        <div class="archive-info">
+          <div class="archive-name">October 2025 Newsletter</div>
+          <div class="archive-date-small">Edition 10 — Oct 2025</div>
+        </div>
+        <i class="fas fa-chevron-right archive-arrow"></i>
+      </a>
+    </div>
+  </section>
+
+</div><!-- content-wrapper -->
+
+<!-- ═══════════════════════════════════════════════
+     FOOTER
+     ═══════════════════════════════════════════════ -->
+<footer class="portal-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand-col">
+        <div class="footer-brand-name">CS <span>Hub</span></div>
+        <div class="footer-brand-desc">African Bank Customer Services Portal. Your central hub for resources, updates, and everything service excellence.</div>
+      </div>
+      <div class="footer-links-col">
+        <div>
+          <div class="footer-col-title">Navigate</div>
+          <a href="https://africanbank.sharepoint.com/sites/CSPortal/SitePages/Newsletters.aspx" class="footer-col-link" target="_parent"><i class="fas fa-newspaper"></i> Newsletters</a>
+          <a href="https://africanbank.sharepoint.com/sites/CSPortal/SitePages/Announcements.aspx" class="footer-col-link" target="_parent"><i class="fas fa-bullhorn"></i> Announcements</a>
+          <a href="https://africanbank.sharepoint.com/sites/CSPortal/SitePages/Training.aspx" class="footer-col-link" target="_parent"><i class="fas fa-graduation-cap"></i> Training</a>
+        </div>
+        <div>
+          <div class="footer-col-title">Resources</div>
+          <a href="https://africanbank.sharepoint.com/sites/CSPortal/SitePages/Knowledge-Base(2).aspx" class="footer-col-link" target="_parent"><i class="fas fa-book-open"></i> Knowledge Base</a>
+          <a href="https://africanbank.sharepoint.com/sites/CSPortal/SitePages/Magazine-&-Spotlight.aspx" class="footer-col-link" target="_parent"><i class="fas fa-star"></i> Beyond the Call Times</a>
+          <a href="https://africanbank.sharepoint.com/sites/CSPortal" class="footer-col-link" target="_parent"><i class="fas fa-home"></i> Home</a>
+        </div>
+        <div>
+          <div class="footer-col-title">Contact</div>
+          <a href="mailto:customerservices@africanbank.co.za" class="footer-col-link"><i class="fas fa-envelope"></i> Email Us</a>
+          <a href="tel:+27110000000" class="footer-col-link"><i class="fas fa-phone"></i> Call Us</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-bottom">
+      <div class="footer-copy"><span class="footer-copy-brand">CS Hub</span> &mdash; African Bank Customer Services Portal &mdash; &copy; 2026</div>
+      <div class="footer-social">
+        <a href="#" aria-label="Teams"><i class="fab fa-microsoft"></i></a>
+        <a href="#" aria-label="SharePoint"><i class="fas fa-cloud"></i></a>
+        <a href="mailto:customerservices@africanbank.co.za" aria-label="Email"><i class="fas fa-envelope"></i></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Toast -->
+<div class="toast" id="toast"><i class="fas fa-circle-check"></i> <span id="toast-msg"></span></div>
+
+<script>
+// ═══ Scroll Reveal ═══
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+reveals.forEach(el => observer.observe(el));
+
+// ═══ Mobile Nav Toggle ═══
+document.getElementById('navToggle').addEventListener('click', function() {
+  document.getElementById('navLinks').classList.toggle('open');
+  const icon = this.querySelector('i');
+  icon.classList.toggle('fa-bars');
+  icon.classList.toggle('fa-times');
+});
+
+// ═══ Toast ═══
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ═══ Subscribe ═══
+function handleSubscribe() {
+  const email = document.getElementById('subscribeEmail').value.trim();
+  if (email && email.includes('@')) {
+    showToast('Subscribed! You\'ll receive the next newsletter.');
+    document.getElementById('subscribeEmail').value = '';
+  } else {
+    showToast('Please enter a valid email address.');
+  }
+}
+</script>
+
+</body>
+</html>

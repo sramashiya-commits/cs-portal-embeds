@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CS Hub — Knowledge Base</title>
+<title>CS Hub — Announcements</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -99,41 +99,39 @@ body::before { content: ''; position: fixed; inset: 0; z-index: 0; pointer-event
 }
 
 
-/* KNOWLEDGE BASE-SPECIFIC */
+/* ANNOUNCEMENTS-SPECIFIC */
 .content-wrapper { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
-.kb-search { position: relative; max-width: 480px; margin: 0 auto 28px; }
-.kb-search-input { width: 100%; padding: 12px 18px 12px 42px; border-radius: 12px; border: 1px solid var(--card-border); font-size: 14px; color: var(--text); background: var(--card); outline: none; transition: border 0.25s, box-shadow 0.25s; }
-.kb-search-input::placeholder { color: var(--muted-light); }
-.kb-search-input:focus { border-color: var(--ab-royal); box-shadow: 0 0 0 3px rgba(0,85,141,0.08); }
-.kb-search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 15px; color: var(--muted-light); }
-.cat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-bottom: 36px; }
-.cat-card { background: var(--card); border-radius: 14px; border: 1px solid var(--card-border); box-shadow: var(--card-shadow); padding: 24px; transition: all 0.35s var(--ease-out); position: relative; overflow: hidden; }
-.cat-card:hover { box-shadow: var(--card-shadow-hover); transform: translateY(-3px); }
-.cat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; border-radius: 14px 14px 0 0; }
-.cat-cs::before { background: var(--ab-royal); }
-.cat-inv::before { background: var(--ab-cyan); }
-.cat-fun::before { background: var(--ab-navy); }
-.cat-dig::before { background: var(--ab-green); }
-.cat-card-header { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
-.cat-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
-.cat-cs .cat-icon { background: var(--royal-bg); color: var(--ab-royal); }
-.cat-inv .cat-icon { background: var(--cyan-bg); color: var(--ab-cyan); }
-.cat-fun .cat-icon { background: var(--navy-bg); color: var(--ab-navy); }
-.cat-dig .cat-icon { background: var(--green-bg); color: var(--ab-green); }
-.cat-name { font-family: var(--font-display); font-size: 19px; font-weight: 600; color: var(--ab-navy); }
-.cat-count { font-size: 11px; color: var(--muted-light); margin-top: 2px; }
-.cat-desc { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 16px; }
-.cat-topics { display: flex; flex-direction: column; gap: 6px; }
-.cat-topic { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border-radius: 8px; background: var(--bg-subtle); border: 1px solid var(--card-border); text-decoration: none; transition: all 0.25s; cursor: pointer; }
-.cat-topic:hover { background: var(--card); box-shadow: var(--card-shadow); border-color: var(--ab-royal); }
-.cat-topic-left { display: flex; align-items: center; gap: 8px; }
-.cat-topic-icon { font-size: 12px; color: var(--muted); }
-.cat-topic-name { font-size: 12.5px; font-weight: 500; color: var(--text-secondary); }
-.cat-topic-arrow { font-size: 10px; color: var(--muted-light); transition: all 0.25s; }
-.cat-topic:hover .cat-topic-arrow { color: var(--ab-royal); transform: translateX(3px); }
-.cat-view-all { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--ab-royal); text-decoration: none; margin-top: 12px; transition: color 0.25s; }
-.cat-view-all:hover { color: var(--navy-light); }
-@media (max-width: 900px) { .cat-grid { grid-template-columns: 1fr; } }
+.pinned-card { background: var(--card); border-radius: 16px; border: 1px solid var(--card-border); box-shadow: var(--card-shadow); padding: 28px; margin-bottom: 24px; border-left: 4px solid var(--ab-green); transition: box-shadow 0.35s; }
+.pinned-card:hover { box-shadow: var(--card-shadow-hover); }
+.pinned-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 50px; font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; background: var(--green-bg); color: var(--ab-green); margin-bottom: 10px; }
+.pinned-title { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: var(--ab-navy); margin-bottom: 10px; line-height: 1.3; }
+.pinned-body { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 14px; }
+.pinned-meta { display: flex; gap: 18px; font-size: 12px; color: var(--muted-light); flex-wrap: wrap; }
+.pinned-meta i { margin-right: 4px; }
+.cat-bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 24px; }
+.cat-label { font-size: 12px; font-weight: 600; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+.cat-btn { padding: 6px 16px; border-radius: 8px; border: 1px solid var(--card-border); font-size: 12px; font-weight: 500; color: var(--muted); background: var(--card); cursor: pointer; transition: all 0.25s; }
+.cat-btn:hover { border-color: var(--ab-green); color: var(--ab-green); }
+.cat-btn.active { background: var(--ab-green); color: #fff; border-color: var(--ab-green); }
+.announce-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-bottom: 36px; }
+.announce-card { display: flex; gap: 16px; background: var(--card); border-radius: 14px; border: 1px solid var(--card-border); box-shadow: var(--card-shadow); padding: 22px; transition: all 0.35s var(--ease-out); text-decoration: none; position: relative; }
+.announce-card:hover { box-shadow: var(--card-shadow-hover); transform: translateY(-3px); }
+.announce-icon-wrap { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.announce-icon-urgent { background: #FEF2F2; color: #DC2626; }
+.announce-icon-update { background: var(--royal-bg); color: var(--ab-royal); }
+.announce-icon-reminder { background: var(--green-bg); color: var(--ab-green); }
+.announce-icon-event { background: var(--cyan-bg); color: var(--ab-cyan); }
+.announce-content { flex: 1; }
+.announce-label { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 50px; font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+.label-urgent { background: #FEF2F2; color: #DC2626; }
+.label-update { background: var(--royal-bg); color: var(--ab-royal); }
+.label-reminder { background: var(--green-bg); color: var(--ab-green); }
+.label-event { background: var(--cyan-bg); color: var(--ab-cyan); }
+.announce-title { font-family: var(--font-display); font-size: 16px; font-weight: 600; color: var(--ab-navy); margin-bottom: 6px; line-height: 1.3; }
+.announce-excerpt { font-size: 12.5px; color: var(--muted); line-height: 1.5; margin-bottom: 10px; }
+.announce-meta { display: flex; gap: 14px; font-size: 11px; color: var(--muted-light); }
+.announce-meta i { margin-right: 4px; }
+@media (max-width: 900px) { .announce-grid { grid-template-columns: 1fr; } }
 
 </style>
 </head>
@@ -149,9 +147,9 @@ body::before { content: ''; position: fixed; inset: 0; z-index: 0; pointer-event
   <div class="nav-links" id="navLinks">
     <a href="https://africanbank.sharepoint.com/sites/CSPortal" class="nav-link nav-link-home" target="_parent"><i class="fas fa-home"></i> Home</a>
     <a href="https://africanbank.sharepoint.com/sites/CSPortal/SitePages/Newsletters.aspx" class="nav-link nav-link-news" target="_parent"><i class="fas fa-newspaper"></i> Newsletters</a>
-    <a href="https://africanbank.sharepoint.com/sites/CSPortal/SitePages/Announcements.aspx" class="nav-link nav-link-announce" target="_parent"><i class="fas fa-bullhorn"></i> Announcements</a>
+    <a href="https://africanbank.sharepoint.com/sites/CSPortal/SitePages/Announcements.aspx" class="nav-link nav-link-announce active" target="_parent"><i class="fas fa-bullhorn"></i> Announcements</a>
     <a href="https://africanbank.sharepoint.com/sites/CSPortal/SitePages/Training.aspx" class="nav-link nav-link-training" target="_parent"><i class="fas fa-graduation-cap"></i> Training</a>
-    <a href="https://africanbank.sharepoint.com/sites/CSPortal/SitePages/Knowledge-Base(2).aspx" class="nav-link nav-link-kb active" target="_parent"><i class="fas fa-book-open"></i> Knowledge Base</a>
+    <a href="https://africanbank.sharepoint.com/sites/CSPortal/SitePages/Knowledge-Base(2).aspx" class="nav-link nav-link-kb" target="_parent"><i class="fas fa-book-open"></i> Knowledge Base</a>
     <a href="https://africanbank.sharepoint.com/sites/CSPortal/SitePages/Magazine-&-Spotlight.aspx" class="nav-link nav-link-mag" target="_parent"><i class="fas fa-star"></i> Beyond the Call Times</a>
   </div>
   <button class="nav-toggle" id="navToggle" aria-label="Menu"><i class="fas fa-bars"></i></button>
@@ -161,169 +159,96 @@ body::before { content: ''; position: fixed; inset: 0; z-index: 0; pointer-event
 
   <section class="page-hero">
     <div class="page-hero-badge"><i class="fas fa-circle"></i> Customer Service Portal</div>
-    <h1>Knowledge Base</h1>
-    <p class="page-hero-sub">Your one-stop repository for SOPs, procedures, guidelines, and documentation across all Customer Service lines.</p>
+    <h1>Announcements</h1>
+    <p class="page-hero-sub">Important notices, urgent updates, and key reminders from the Customer Service division.</p>
     <div class="page-hero-line"></div>
   </section>
 
-  <!-- SEARCH -->
-  <div class="kb-search">
-    <i class="fas fa-search kb-search-icon"></i>
-    <input type="text" class="kb-search-input" placeholder="Search SOPs, procedures, guidelines..." onkeyup="handleSearch(this.value)">
+  <!-- PINNED -->
+  <div class="pinned-card">
+    <div class="pinned-badge"><i class="fas fa-thumbtack"></i> Pinned</div>
+    <div class="pinned-title">Customer Service Forum Launch — Q4 2026</div>
+    <div class="pinned-body">
+      The Customer Service Forum is launching this quarter to drive collaboration, shared learning, and continuous improvement across all CS teams. The forum will include monthly sessions, open Q&A with leadership, and cross-team knowledge sharing. Stay tuned for the official kick-off date and registration details.
+    </div>
+    <div class="pinned-meta">
+      <span><i class="fas fa-user"></i> Tiisetso Tsotetsi</span>
+      <span><i class="fas fa-calendar"></i> 22 Aug 2026</span>
+      <span><i class="fas fa-tag"></i> Strategic Initiative</span>
+    </div>
   </div>
 
-  <!-- SOP CATEGORIES -->
+  <!-- CATEGORIES -->
+  <div class="cat-bar">
+    <span class="cat-label"><i class="fas fa-filter"></i> Category</span>
+    <button class="cat-btn active" onclick="filterCat('all',this)">All</button>
+    <button class="cat-btn" onclick="filterCat('urgent',this)">Urgent</button>
+    <button class="cat-btn" onclick="filterCat('update',this)">Updates</button>
+    <button class="cat-btn" onclick="filterCat('reminder',this)">Reminders</button>
+    <button class="cat-btn" onclick="filterCat('event',this)">Events</button>
+  </div>
+
+  <!-- ANNOUNCEMENTS LIST -->
   <div class="section-header">
-    <div class="accent-dot" style="background:linear-gradient(135deg,var(--teal),var(--warm))"></div>
-    <h2>SOP Categories</h2>
+    <div class="accent-dot"></div>
+    <h2>Recent Announcements</h2>
   </div>
 
-  <div class="cat-grid reveal">
-    <!-- CUSTOMER SERVICE -->
-    <div class="cat-card cat-cs">
-      <div class="cat-card-header">
-        <div class="cat-icon"><i class="fas fa-headset"></i></div>
-        <div><div class="cat-name">Customer Service</div><div class="cat-count">12 SOPs</div></div>
+  <div class="announce-grid reveal">
+    <a href="#" class="announce-card">
+      <div class="announce-icon-wrap announce-icon-urgent"><i class="fas fa-exclamation-triangle"></i></div>
+      <div class="announce-content">
+        <div class="announce-label label-urgent"><i class="fas fa-circle"></i> Urgent</div>
+        <div class="announce-title">Claims Submission Accuracy — Immediate Attention Required</div>
+        <div class="announce-excerpt">Accurate and timely claims submission is essential. Ensure correct shift capturing and adherence to public holiday guidelines. Non-compliance impacts team performance metrics.</div>
+        <div class="announce-meta"><span><i class="fas fa-user"></i> Tiisetso Tsotetsi</span><span><i class="fas fa-calendar"></i> 20 Aug 2026</span></div>
       </div>
-      <div class="cat-desc">General servicing procedures, call handling, escalation protocols, and service level guidelines.</div>
-      <div class="cat-topics">
-        <a href="#" class="cat-topic">
-          <span class="cat-topic-left"><i class="fas fa-file-lines cat-topic-icon"></i><span class="cat-topic-name">Call Handling Procedure</span></span>
-          <i class="fas fa-chevron-right cat-topic-arrow"></i>
-        </a>
-        <a href="#" class="cat-topic">
-          <span class="cat-topic-left"><i class="fas fa-file-lines cat-topic-icon"></i><span class="cat-topic-name">Escalation Protocol</span></span>
-          <i class="fas fa-chevron-right cat-topic-arrow"></i>
-        </a>
-        <a href="#" class="cat-topic">
-          <span class="cat-topic-left"><i class="fas fa-file-lines cat-topic-icon"></i><span class="cat-topic-name">Claims Submission Guide</span></span>
-          <i class="fas fa-chevron-right cat-topic-arrow"></i>
-        </a>
+    </a>
+    <a href="#" class="announce-card">
+      <div class="announce-icon-wrap announce-icon-update"><i class="fas fa-chart-line"></i></div>
+      <div class="announce-content">
+        <div class="announce-label label-update"><i class="fas fa-circle"></i> Update</div>
+        <div class="announce-title">General Servicing Achieves 88% Service Level</div>
+        <div class="announce-excerpt">General Servicing delivered a solid 88% service level with a 2.6% abandonment rate last month. Product lines remain below the 70% target and will require renewed focus going forward.</div>
+        <div class="announce-meta"><span><i class="fas fa-user"></i> Tsholo Motsepe</span><span><i class="fas fa-calendar"></i> 18 Aug 2026</span></div>
       </div>
-      <a href="#" class="cat-view-all"><i class="fas fa-arrow-right"></i> View all 12 SOPs</a>
-    </div>
-
-    <!-- INVESTMENTS -->
-    <div class="cat-card cat-inv">
-      <div class="cat-card-header">
-        <div class="cat-icon"><i class="fas fa-chart-line"></i></div>
-        <div><div class="cat-name">Investments</div><div class="cat-count">8 SOPs</div></div>
+    </a>
+    <a href="#" class="announce-card">
+      <div class="announce-icon-wrap announce-icon-info"><i class="fas fa-info-circle"></i></div>
+      <div class="announce-content">
+        <div class="announce-label label-info"><i class="fas fa-circle"></i> Info</div>
+        <div class="announce-title">Investments Exceptional Performance: 201% Volume, 193% Value</div>
+        <div class="announce-excerpt">The Investments line delivered exceptional results with 201% in volume and 193% in value. Well done to the team for outstanding performance.</div>
+        <div class="announce-meta"><span><i class="fas fa-user"></i> Ntokozo Mnisi</span><span><i class="fas fa-calendar"></i> 15 Aug 2026</span></div>
       </div>
-      <div class="cat-desc">Investment product procedures, compliance requirements, and performance tracking.</div>
-      <div class="cat-topics">
-        <a href="#" class="cat-topic">
-          <span class="cat-topic-left"><i class="fas fa-file-lines cat-topic-icon"></i><span class="cat-topic-name">Investment Onboarding</span></span>
-          <i class="fas fa-chevron-right cat-topic-arrow"></i>
-        </a>
-        <a href="#" class="cat-topic">
-          <span class="cat-topic-left"><i class="fas fa-file-lines cat-topic-icon"></i><span class="cat-topic-name">Product Switching Procedure</span></span>
-          <i class="fas fa-chevron-right cat-topic-arrow"></i>
-        </a>
-        <a href="#" class="cat-topic">
-          <span class="cat-topic-left"><i class="fas fa-file-lines cat-topic-icon"></i><span class="cat-topic-name">Compliance Checklist</span></span>
-          <i class="fas fa-chevron-right cat-topic-arrow"></i>
-        </a>
+    </a>
+    <a href="#" class="announce-card">
+      <div class="announce-icon-wrap announce-icon-reminder"><i class="fas fa-clock"></i></div>
+      <div class="announce-content">
+        <div class="announce-label label-reminder"><i class="fas fa-circle"></i> Reminder</div>
+        <div class="announce-title">Public Holiday Shift Guidelines — Please Review</div>
+        <div class="announce-excerpt">Reminder to all team members: review and adhere to the public holiday shift guidelines. Correct shift capturing is critical for accurate performance tracking and claims processing.</div>
+        <div class="announce-meta"><span><i class="fas fa-user"></i> Kgomotso Tabudi</span><span><i class="fas fa-calendar"></i> 12 Aug 2026</span></div>
       </div>
-      <a href="#" class="cat-view-all"><i class="fas fa-arrow-right"></i> View all 8 SOPs</a>
-    </div>
-
-    <!-- FUNERAL -->
-    <div class="cat-card cat-fun">
-      <div class="cat-card-header">
-        <div class="cat-icon"><i class="fas fa-shield-halved"></i></div>
-        <div><div class="cat-name">Funeral</div><div class="cat-count">10 SOPs</div></div>
+    </a>
+    <a href="#" class="announce-card">
+      <div class="announce-icon-wrap announce-icon-event"><i class="fas fa-calendar-check"></i></div>
+      <div class="announce-content">
+        <div class="announce-label label-event"><i class="fas fa-circle"></i> Event</div>
+        <div class="announce-title">CS Hub Orientation Training — 1 September</div>
+        <div class="announce-excerpt">Join the CS Hub Orientation Training on 1 September 2026 from 12:00 PM to 1:00 PM. This virtual session will cover portal navigation, resource access, and new team tools.</div>
+        <div class="announce-meta"><span><i class="fas fa-user"></i> Kgalaletso Tladinyane</span><span><i class="fas fa-calendar"></i> 10 Aug 2026</span></div>
       </div>
-      <div class="cat-desc">Funeral product processes, claims management, and customer service guidelines.</div>
-      <div class="cat-topics">
-        <a href="#" class="cat-topic">
-          <span class="cat-topic-left"><i class="fas fa-file-lines cat-topic-icon"></i><span class="cat-topic-name">Funeral Claims Process</span></span>
-          <i class="fas fa-chevron-right cat-topic-arrow"></i>
-        </a>
-        <a href="#" class="cat-topic">
-          <span class="cat-topic-left"><i class="fas fa-file-lines cat-topic-icon"></i><span class="cat-topic-name">Policy Amendment Procedure</span></span>
-          <i class="fas fa-chevron-right cat-topic-arrow"></i>
-        </a>
-        <a href="#" class="cat-topic">
-          <span class="cat-topic-left"><i class="fas fa-file-lines cat-topic-icon"></i><span class="cat-topic-name">Beneficiary Update Guide</span></span>
-          <i class="fas fa-chevron-right cat-topic-arrow"></i>
-        </a>
+    </a>
+    <a href="#" class="announce-card">
+      <div class="announce-icon-wrap announce-icon-update"><i class="fas fa-heart"></i></div>
+      <div class="announce-content">
+        <div class="announce-label label-update"><i class="fas fa-circle"></i> Update</div>
+        <div class="announce-title">Customer Experience: Empathy & Consistency Focus</div>
+        <div class="announce-excerpt">Customer experience remains a key priority. We are strengthening empathy, consistency, and service excellence in every interaction. New CX guidelines will be shared in the next training session.</div>
+        <div class="announce-meta"><span><i class="fas fa-user"></i> Lawrence Sekano</span><span><i class="fas fa-calendar"></i> 8 Aug 2026</span></div>
       </div>
-      <a href="#" class="cat-view-all"><i class="fas fa-arrow-right"></i> View all 10 SOPs</a>
-    </div>
-
-    <!-- DIGITAL -->
-    <div class="cat-card cat-dig">
-      <div class="cat-card-header">
-        <div class="cat-icon"><i class="fas fa-laptop-code"></i></div>
-        <div><div class="cat-name">Digital</div><div class="cat-count">6 SOPs</div></div>
-      </div>
-      <div class="cat-desc">Self-service tools, digital channels, app support, and online banking procedures.</div>
-      <div class="cat-topics">
-        <a href="#" class="cat-topic">
-          <span class="cat-topic-left"><i class="fas fa-file-lines cat-topic-icon"></i><span class="cat-topic-name">App Troubleshooting Guide</span></span>
-          <i class="fas fa-chevron-right cat-topic-arrow"></i>
-        </a>
-        <a href="#" class="cat-topic">
-          <span class="cat-topic-left"><i class="fas fa-file-lines cat-topic-icon"></i><span class="cat-topic-name">Online Registration Process</span></span>
-          <i class="fas fa-chevron-right cat-topic-arrow"></i>
-        </a>
-        <a href="#" class="cat-topic">
-          <span class="cat-topic-left"><i class="fas fa-file-lines cat-topic-icon"></i><span class="cat-topic-name">Self-Service Referral SOP</span></span>
-          <i class="fas fa-chevron-right cat-topic-arrow"></i>
-        </a>
-      </div>
-      <a href="#" class="cat-view-all"><i class="fas fa-arrow-right"></i> View all 6 SOPs</a>
-    </div>
-  </div>
-
-  <!-- RECENTLY UPDATED -->
-  <div class="recent-section">
-    <div class="section-header">
-      <div class="accent-dot" style="background:linear-gradient(135deg,var(--teal-light),var(--gold))"></div>
-      <h2>Recently Updated</h2>
-    </div>
-    <div class="recent-list reveal">
-      <a href="#" class="recent-item">
-        <div class="recent-icon pdf"><i class="fas fa-file-pdf"></i></div>
-        <div class="recent-info">
-          <div class="recent-title">Claims Submission Guide v3.2</div>
-          <div class="recent-meta">Updated 20 Aug 2026 &middot; Customer Service</div>
-        </div>
-        <i class="fas fa-chevron-right recent-arrow"></i>
-      </a>
-      <a href="#" class="recent-item">
-        <div class="recent-icon doc"><i class="fas fa-file-word"></i></div>
-        <div class="recent-info">
-          <div class="recent-title">Escalation Protocol v2.1</div>
-          <div class="recent-meta">Updated 18 Aug 2026 &middot; Customer Service</div>
-        </div>
-        <i class="fas fa-chevron-right recent-arrow"></i>
-      </a>
-      <a href="#" class="recent-item">
-        <div class="recent-icon xls"><i class="fas fa-file-excel"></i></div>
-        <div class="recent-info">
-          <div class="recent-title">Investment Compliance Checklist v1.5</div>
-          <div class="recent-meta">Updated 15 Aug 2026 &middot; Investments</div>
-        </div>
-        <i class="fas fa-chevron-right recent-arrow"></i>
-      </a>
-      <a href="#" class="recent-item">
-        <div class="recent-icon pdf"><i class="fas fa-file-pdf"></i></div>
-        <div class="recent-info">
-          <div class="recent-title">Funeral Claims Process v4.0</div>
-          <div class="recent-meta">Updated 12 Aug 2026 &middot; Funeral</div>
-        </div>
-        <i class="fas fa-chevron-right recent-arrow"></i>
-      </a>
-      <a href="#" class="recent-item">
-        <div class="recent-icon ppt"><i class="fas fa-file-powerpoint"></i></div>
-        <div class="recent-info">
-          <div class="recent-title">Digital Self-Service Training Deck</div>
-          <div class="recent-meta">Updated 10 Aug 2026 &middot; Digital</div>
-        </div>
-        <i class="fas fa-chevron-right recent-arrow"></i>
-      </a>
-    </div>
+    </a>
   </div>
 
 </div>
@@ -371,7 +296,7 @@ const reveals = document.querySelectorAll('.reveal');
 const observer = new IntersectionObserver((entries) => { entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)} }); }, { threshold: 0.1 });
 reveals.forEach(el => observer.observe(el));
 document.getElementById('navToggle').addEventListener('click', function() { document.getElementById('navLinks').classList.toggle('open'); const icon=this.querySelector('i'); icon.classList.toggle('fa-bars');icon.classList.toggle('fa-times'); });
-function handleSearch(val) { if(val.length>2) showToast('Searching for: "'+val+'"'); }
+function filterCat(cat, btn) { document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); showToast('Filtering: '+(cat==='all'?'All Categories':cat.charAt(0).toUpperCase()+cat.slice(1))); }
 function showToast(msg) { const t=document.getElementById('toast'); document.getElementById('toast-msg').textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }
 </script>
 </body>
